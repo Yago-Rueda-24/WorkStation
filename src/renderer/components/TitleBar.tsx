@@ -89,7 +89,6 @@ const TitleBar: React.FC = () => {
             <div className="flex items-center pl-3 h-full z-[1001]">
                 <div className="flex items-center mr-4" style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}>
                     <img src="electron-vite.svg" alt="App Icon" className="w-4 h-4 mr-2" />
-                    <span className="text-xs font-medium whitespace-nowrap">WorkStation</span>
                 </div>
                 <nav ref={navRef} className="flex gap-1 h-full items-center" style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}>
                     {menus.map((menu) => (
