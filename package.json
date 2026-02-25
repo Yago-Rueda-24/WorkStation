@@ -2,6 +2,8 @@
   "name": "workstation",
   "private": true,
   "version": "0.0.0",
+  "description": "Desktop workstation application",
+  "author": "Yago Rueda",
   "type": "module",
   "scripts": {
     "dev": "vite",
