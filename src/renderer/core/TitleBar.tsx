@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router';
 
 interface MenuItem {
     label: string;
@@ -16,15 +17,15 @@ interface MenuSection {
 const TitleBar: React.FC = () => {
     const [openMenu, setOpenMenu] = useState<string | null>(null);
     const navRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     const menus: MenuSection[] = [
         {
             id: 'file',
             label: 'File',
             items: [
-                { label: 'New File', shortcut: 'Ctrl+N' },
-                { label: 'Open File...', shortcut: 'Ctrl+O' },
-                { label: 'Save', shortcut: 'Ctrl+S' },
+                { label: 'Dashboard', onClick: () => navigate('/dashboard') },
+                { label: 'Settings', onClick: () => navigate('/settings') },
                 { label: 'Exit', danger: true, onClick: () => window.close() }
             ]
         },
