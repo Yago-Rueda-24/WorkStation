@@ -1,11 +1,9 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import { SysInfoModule } from './sysinfo/modules/sysinfo.module'
 import { IEventPort, BaseModule } from '../domain/ports/module.port'
-import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 
-const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // The built directory structure

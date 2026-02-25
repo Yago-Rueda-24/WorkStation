@@ -14,8 +14,7 @@ export class SysInfoEventEmitter extends EventEmitter {
     }
 
     async start(): Promise<void> {
-        let lastSnapshot: SysInfoEntity;
-        lastSnapshot = new SysInfoEntity();
+
         if (this.running) return;
         this.running = true;
 
@@ -23,7 +22,7 @@ export class SysInfoEventEmitter extends EventEmitter {
             try {
                 const snapshot: SysInfoEntity = await this.sysInfoService.getAll();
 
-                lastSnapshot = snapshot;
+
                 this.emit('updated', snapshot);
 
             } catch (error) {
