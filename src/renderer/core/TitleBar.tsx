@@ -24,9 +24,15 @@ const TitleBar: React.FC = () => {
             id: 'file',
             label: 'File',
             items: [
+                { label: 'Exit', danger: true, onClick: () => window.close() }
+            ]
+        },
+        {
+            id: 'view',
+            label: 'View',
+            items: [
                 { label: 'Dashboard', onClick: () => navigate('/dashboard') },
                 { label: 'Settings', onClick: () => navigate('/settings') },
-                { label: 'Exit', danger: true, onClick: () => window.close() }
             ]
         },
         {
@@ -38,16 +44,6 @@ const TitleBar: React.FC = () => {
                 { label: 'Cut', shortcut: 'Ctrl+X' },
                 { label: 'Copy', shortcut: 'Ctrl+C' },
                 { label: 'Paste', shortcut: 'Ctrl+V' }
-            ]
-        },
-        {
-            id: 'view',
-            label: 'View',
-            items: [
-                { label: 'Appearance' },
-                { label: 'Output' },
-                { label: 'Debug Console' },
-                { label: 'Terminal' }
             ]
         },
         {

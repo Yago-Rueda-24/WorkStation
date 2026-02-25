@@ -31,6 +31,7 @@ let win: BrowserWindow | null
 function createWindow() {
     win = new BrowserWindow({
         titleBarStyle: 'hidden',
+        show: false,
         titleBarOverlay: {
             color: '#0f172a',
             symbolColor: '#94a3b8',
@@ -41,6 +42,9 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.mjs'),
         },
     })
+
+    win.maximize()
+    win.show()
 
     // Test active push message to Renderer-process.
     win.webContents.on('did-finish-load', () => {
