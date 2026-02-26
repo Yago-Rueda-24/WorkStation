@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-import { SysInfoModule } from './sysinfo/modules/sysinfo.module'
-import { IEventPort, BaseModule } from '../domain/ports/module.port'
+import { SysInfoModule } from '../../modules/sysinfo/backend/modules/sysinfo.module'
+import { IEventPort, BaseModule } from '../../shared/domain/ports/module.port'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 

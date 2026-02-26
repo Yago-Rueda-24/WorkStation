@@ -1,7 +1,7 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router'
 import MainLayout from './MainLayout'
-import Dashboard from '../sysinfo/views/Dashboard'
-import Settings from '../settings/views/Settings'
+import Dashboard from '../../modules/sysinfo/frontend/views/Dashboard'
+import Settings from '../../modules/settings/frontend/views/Settings'
 
 function App() {
     return (

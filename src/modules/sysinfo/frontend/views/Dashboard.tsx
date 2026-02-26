@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { SysInfoEntity } from '../../../main/sysinfo/domain/sysinfo.entity'
+import { SysInfoEntity } from '../../backend/domain/sysinfo.entity'
 import {
     Chart as ChartJS,
     CategoryScale,
