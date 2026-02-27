@@ -3,6 +3,9 @@ import { SysInfoModule } from '../../modules/sysinfo/backend/modules/sysinfo.mod
 import { IEventPort, BaseModule } from '../../shared/domain/ports/module.port'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import { TaskManagerModule } from '../../modules/TaksManager/TaskManager.module'
+import pc from 'picocolors'
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -78,13 +81,18 @@ app.on('activate', () => {
 app.whenReady().then(() => {
     const modules: BaseModule[] = [
         new SysInfoModule(),
+        new TaskManagerModule(),
     ];
 
+    modules.forEach(mod => {
+        console.log(pc.cyan("Found module ") + pc.bold(mod.prefix));
+    });
     // Register handlers (mandatory for all BaseModules)
     modules.forEach(mod => {
         Object.entries(mod.getHandlers()).forEach(([name, fn]) => {
             ipcMain.handle(`${mod.prefix}:${name}`, (_, payload) => fn(payload));
         });
+        console.log(pc.green("Registered module ") + pc.bold(mod.prefix));
     });
 
     createWindow();
