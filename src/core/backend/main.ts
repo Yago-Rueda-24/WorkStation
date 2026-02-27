@@ -89,12 +89,16 @@ app.whenReady().then(() => {
     modules.forEach(mod => {
         console.log(pc.cyan("Found module ") + pc.bold(mod.prefix));
     });
+    console.log(pc.cyan(""));
     // Register handlers (mandatory for all BaseModules)
     modules.forEach(mod => {
+        console.log(pc.yellow("Registering module ") + pc.bold(mod.prefix));
         Object.entries(mod.getHandlers()).forEach(([name, fn]) => {
             ipcMain.handle(`${mod.prefix}:${name}`, (_, payload) => fn(payload));
+            console.log('- ' + pc.yellow("handler ") + pc.bold(`${mod.prefix}:${name}`));
         });
         console.log(pc.green("Registered module ") + pc.bold(mod.prefix));
+        console.log(pc.cyan(""));
     });
 
     createWindow();
