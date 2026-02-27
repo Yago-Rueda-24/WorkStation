@@ -32,6 +32,7 @@ const TitleBar: React.FC = () => {
             label: 'View',
             items: [
                 { label: 'Dashboard', onClick: () => navigate('/dashboard') },
+                { label: 'Tasks', onClick: () => navigate('/tasks') },
                 { label: 'Settings', onClick: () => navigate('/settings') },
             ]
         },
