@@ -1,8 +1,8 @@
-import { SysInfoController } from '../controllers/sysinfo.controller';
-import { SysInfoService } from '../services/sysinfo.service';
-import { SysInfoInfra } from '../infraestrucuture/sysinfo.infra';
-import { SysInfoEventEmitter } from '../infraestrucuture/sysinfo.eventemitter';
-import { IEventPort, BaseModule } from '../../../../shared/domain/ports/module.port';
+import { SysInfoController } from './backend/controllers/sysinfo.controller';
+import { SysInfoService } from './backend/services/sysinfo.service';
+import { SysInfoInfra } from './backend/infraestrucuture/sysinfo.infra';
+import { SysInfoEventEmitter } from './backend/infraestrucuture/sysinfo.eventemitter';
+import { IEventPort, BaseModule } from '../../shared/domain/ports/module.port';
 import { BrowserWindow } from 'electron';
 
 export class SysInfoModule extends BaseModule implements IEventPort {
