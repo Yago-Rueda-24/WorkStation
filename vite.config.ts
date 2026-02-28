@@ -3,6 +3,7 @@ import path from 'node:path'
 import electron from 'vite-plugin-electron/simple'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import swc from 'vite-plugin-swc-transform'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,6 +14,31 @@ export default defineConfig({
       main: {
         // Shortcut of `build.lib.entry`.
         entry: 'src/core/backend/main.ts',
+        vite: {
+          plugins: [
+            swc({
+              swcOptions: {
+                jsc: {
+                  parser: {
+                    syntax: 'typescript',
+                    decorators: true,
+                  },
+                  transform: {
+                    legacyDecorator: true,
+                    decoratorMetadata: true,
+                    useDefineForClassFields: false,
+                  },
+                  target: 'es2020',
+                },
+              },
+            }),
+          ],
+          build: {
+            rollupOptions: {
+              external: ['better-sqlite3', 'typeorm', 'reflect-metadata'],
+            },
+          },
+        },
       },
       preload: {
         // Shortcut of `build.rollupOptions.input`.
