@@ -26,3 +26,4 @@ dist-ssr
 /dist-electron
 /public
 /release
+database.sqlite
