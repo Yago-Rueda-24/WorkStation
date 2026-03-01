@@ -63,12 +63,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({ tasks, navigateToDate, onTa
         return cells;
     }, [year, month]);
 
-    // Group tasks by date string (YYYY-MM-DD)
+    // Group tasks by dueDate string (YYYY-MM-DD)
     const tasksByDate = useMemo(() => {
         const map: Record<string, Task[]> = {};
         tasks.forEach(task => {
-            const d = new Date(task.createdAt);
-            const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            if (!task.dueDate) return; // skip tasks without a due date
+            // Use the dueDate string directly as the key (it's already YYYY-MM-DD from the date input)
+            const key = task.dueDate;
             if (!map[key]) map[key] = [];
             map[key].push(task);
         });
