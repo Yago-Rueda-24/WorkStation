@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Task } from '../components/TaskDetailPanel';
 
 interface CalendarViewProps {
     tasks: Task[];
+    navigateToDate?: Date | null;
     onTaskClick: (task: Task) => void;
     onDeleteTask: (taskId: number) => void;
     onNewTask: () => void;
@@ -21,8 +22,14 @@ const getStatusBorder = (status: Task['status']) => {
     }
 };
 
-const CalendarView: React.FC<CalendarViewProps> = ({ tasks, onTaskClick }) => {
+const CalendarView: React.FC<CalendarViewProps> = ({ tasks, navigateToDate, onTaskClick }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
+
+    useEffect(() => {
+        if (navigateToDate) {
+            setCurrentDate(new Date(navigateToDate.getFullYear(), navigateToDate.getMonth(), 1));
+        }
+    }, [navigateToDate]);
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();

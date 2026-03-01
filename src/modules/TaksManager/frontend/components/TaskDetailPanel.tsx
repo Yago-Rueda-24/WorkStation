@@ -6,6 +6,7 @@ export interface Task {
     description: string | null;
     status: 'pending' | 'in_progress' | 'done';
     completed: boolean;
+    dueDate: string | null;
     createdAt: string;
 }
 
@@ -14,7 +15,7 @@ interface TaskDetailPanelProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (updatedTask: Task) => void;
-    onCreate: (newTask: { title: string; description: string; status: Task['status'] }) => void;
+    onCreate: (newTask: { title: string; description: string; status: Task['status']; dueDate: string | null }) => void;
     onDelete: (taskId: number) => void;
 }
 
@@ -30,6 +31,7 @@ const TaskDetailPanel: React.FC<TaskDetailPanelProps> = ({ task, isOpen, onClose
                 description: '',
                 status: 'pending' as const,
                 completed: false,
+                dueDate: null,
                 createdAt: new Date().toISOString(),
             });
         }
@@ -59,6 +61,7 @@ const TaskDetailPanel: React.FC<TaskDetailPanelProps> = ({ task, isOpen, onClose
                     title: editTask.title,
                     description: editTask.description ?? '',
                     status: editTask.status,
+                    dueDate: editTask.dueDate,
                 });
             } else {
                 onSave(editTask);
@@ -138,6 +141,16 @@ const TaskDetailPanel: React.FC<TaskDetailPanelProps> = ({ task, isOpen, onClose
                                     <option value="in_progress">In Progress</option>
                                     <option value="done">Done</option>
                                 </select>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold text-slate-300">Due Date</label>
+                                <input
+                                    type="date"
+                                    value={editTask.dueDate ?? ''}
+                                    onChange={(e) => handleChange('dueDate', e.target.value || null as any)}
+                                    className="w-full bg-slate-800 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-medium [color-scheme:dark]"
+                                />
                             </div>
                         </>
                     )}

@@ -33,7 +33,7 @@ function TaskListView() {
         setIsPanelOpen(true);
     };
 
-    const handleCreateTask = async (newTask: { title: string; description: string; status: string }) => {
+    const handleCreateTask = async (newTask: { title: string; description: string; status: string; dueDate: string | null }) => {
         try {
             await api.handleCreate(newTask);
             await fetchTasks();
@@ -50,6 +50,7 @@ function TaskListView() {
                 description: updatedTask.description,
                 status: updatedTask.status,
                 completed: updatedTask.status === 'done',
+                dueDate: updatedTask.dueDate,
             });
             await fetchTasks();
         } catch (err) {

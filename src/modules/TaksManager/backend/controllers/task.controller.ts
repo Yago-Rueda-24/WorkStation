@@ -16,11 +16,11 @@ export class TaskController {
         return this.taskService.getById(payload.id);
     }
 
-    async handleCreate(payload: { title: string; description?: string; status?: TaskStatus }): Promise<Task> {
+    async handleCreate(payload: { title: string; description?: string; status?: TaskStatus; dueDate?: string | null }): Promise<Task> {
         return this.taskService.create(payload);
     }
 
-    async handleUpdate(payload: { id: number; title?: string; completed?: boolean; description?: string; status?: TaskStatus }): Promise<Task | null> {
+    async handleUpdate(payload: { id: number; title?: string; completed?: boolean; description?: string; status?: TaskStatus; dueDate?: string | null }): Promise<Task | null> {
         const { id, ...data } = payload;
         return this.taskService.update(id, data);
     }

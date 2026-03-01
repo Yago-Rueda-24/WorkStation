@@ -23,6 +23,9 @@ export class Task {
     @Column({ type: 'varchar', default: TaskStatus.PENDING })
     status!: TaskStatus;
 
+    @Column({ type: 'text', nullable: true })
+    dueDate!: string | null;
+
     @CreateDateColumn()
     createdAt!: Date;
 }
