@@ -7,7 +7,7 @@ interface MainLayoutProps {
 
 function MainLayout({ children }: MainLayoutProps) {
     return (
-        <div className="flex flex-col min-h-screen pt-[calc(35px+1.5rem)] pb-6 w-full box-border bg-[#0d1117] text-[#f8fafc] font-sans selection:bg-teal-500/30">
+        <div className="flex flex-col h-screen pt-[calc(35px+1.5rem)] pb-6 w-full box-border bg-[#0d1117] text-[#f8fafc] font-sans selection:bg-teal-500/30">
             <style>
                 {`
                 body {
@@ -18,7 +18,7 @@ function MainLayout({ children }: MainLayoutProps) {
                 `}
             </style>
             <TitleBar />
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col flex-1 min-h-0">
                 {children}
             </div>
         </div>

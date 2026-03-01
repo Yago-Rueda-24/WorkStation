@@ -37,5 +37,12 @@ contextBridge.exposeInMainWorld('api', {
             ipcRenderer.on('sysinfo:updated', listener);
             return () => ipcRenderer.removeListener('sysinfo:updated', listener);
         }
+    },
+    taskmanager: {
+        handleGetAll: (payload?: any) => ipcRenderer.invoke('taskmanager:handleGetAll', payload),
+        handleGetById: (payload?: any) => ipcRenderer.invoke('taskmanager:handleGetById', payload),
+        handleCreate: (payload?: any) => ipcRenderer.invoke('taskmanager:handleCreate', payload),
+        handleUpdate: (payload?: any) => ipcRenderer.invoke('taskmanager:handleUpdate', payload),
+        handleDelete: (payload?: any) => ipcRenderer.invoke('taskmanager:handleDelete', payload),
     }
 });
