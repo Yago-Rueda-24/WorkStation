@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import Sidebar, { TaskFilter, ViewMode } from '../components/Sidebar';
 import TaskDetailPanel, { Task } from '../components/TaskDetailPanel';
 import CalendarView from './CalendarView';
+import KanbanView from './KanbanView';
 
 const api = (window as any).api.taskmanager;
 
@@ -67,6 +68,24 @@ function TaskListView() {
         }
     };
 
+    const handleStatusChange = async (taskId: number, newStatus: string) => {
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
+        try {
+            await api.handleUpdate({
+                id: task.id,
+                title: task.title,
+                description: task.description,
+                status: newStatus,
+                completed: newStatus === 'done',
+                dueDate: task.dueDate,
+            });
+            await fetchTasks();
+        } catch (err) {
+            console.error('[TaskManager] Failed to update task status:', err);
+        }
+    };
+
     const handleOpenPanel = (task: Task) => {
         setEditingTask(task);
         setIsPanelOpen(true);
@@ -121,6 +140,14 @@ function TaskListView() {
                     onTaskClick={handleOpenPanel}
                     onDeleteTask={handleDeleteTask}
                     onNewTask={handleNewTask}
+                />
+            ) : activeView === 'kanban' ? (
+                <KanbanView
+                    tasks={tasks}
+                    onTaskClick={handleOpenPanel}
+                    onDeleteTask={handleDeleteTask}
+                    onNewTask={handleNewTask}
+                    onStatusChange={handleStatusChange}
                 />
             ) : (
                 <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-y-auto pr-2">
