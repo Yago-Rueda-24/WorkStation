@@ -2,7 +2,7 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router'
 import MainLayout from './MainLayout'
 import Dashboard from '../../modules/sysinfo/frontend/views/Dashboard'
 import Settings from '../../modules/settings/frontend/views/Settings'
-import TaskListView from '../../modules/TaksManager/frontend/views/TaskListView'
+import TaskManagerView from '../../modules/TaksManager/frontend/views/TaskManagerView'
 
 function App() {
     return (
@@ -12,7 +12,7 @@ function App() {
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/settings" element={<Settings />} />
-                    <Route path="/tasks" element={<TaskListView />} />
+                    <Route path="/tasks" element={<TaskManagerView />} />
                 </Routes>
             </MainLayout>
         </HashRouter>
