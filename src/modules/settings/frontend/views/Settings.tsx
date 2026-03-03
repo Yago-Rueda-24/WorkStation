@@ -60,7 +60,6 @@ function Settings() {
                 sileo.info({
                     title: 'Up to Date',
                     description: 'You are running the latest version.',
-                    position: 'top-center',
                     duration: 4000,
                 })
             }
@@ -68,7 +67,6 @@ function Settings() {
             sileo.error({
                 title: 'Update Error',
                 description: 'Could not check for updates. Try again later.',
-                position: 'top-center',
                 duration: 5000,
             })
         } finally {

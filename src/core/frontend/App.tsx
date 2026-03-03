@@ -8,7 +8,7 @@ import TaskManagerView from '../../modules/TaksManager/frontend/views/TaskManage
 function App() {
     return (
         <>
-            <Toaster position="bottom-left" />
+            <Toaster position="bottom-right" />
             <HashRouter>
                 <MainLayout>
                     <Routes>

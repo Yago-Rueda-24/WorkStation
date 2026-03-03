@@ -27,3 +27,4 @@ dist-ssr
 /public
 /release
 database.sqlite
+.env
