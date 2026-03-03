@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
-    "release": "tsc && vite build && electron-builder --publish always",
+    "release": "tsc && vite build && dotenv -- electron-builder --publish always",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -36,6 +36,7 @@
     "@typescript-eslint/parser": "^8.56.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.24",
+    "dotenv-cli": "^11.0.0",
     "electron": "^40.6.0",
     "electron-builder": "^26.8.1",
     "eslint": "^9.0.0",
