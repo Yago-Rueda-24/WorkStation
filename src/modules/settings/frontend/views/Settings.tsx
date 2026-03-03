@@ -21,12 +21,18 @@ function Settings() {
                         title: 'Descargar',
                         onClick: () => (window as any).api.updater.downloadUpdate(),
                     },
+                    styles: {
+                        description: "text-black/75!",
+                    }
                 })
             } else {
                 sileo.info({
                     title: 'Aplicación actualizada',
                     description: 'Estás utilizando la última versión de WorkStation.',
                     duration: 4000,
+                    styles: {
+                        description: "text-black/75!",
+                    }
                 })
             }
         } catch {
@@ -34,6 +40,9 @@ function Settings() {
                 title: 'Error de actualización',
                 description: 'No se ha podido comprobar si hay actualizaciones. Inténtalo más tarde.',
                 duration: 5000,
+                styles: {
+                    description: "text-black/75!",
+                }
             })
         } finally {
             setChecking(false)
