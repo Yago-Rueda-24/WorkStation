@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { app } from 'electron';
 import path from 'node:path';
 import { Task } from '../../modules/TaksManager/backend/domain/task.entity';
+import { Tag } from '../../modules/TaksManager/backend/domain/tag.entity';
 
 const isDev = !!process.env['VITE_DEV_SERVER_URL'];
 const dbPath = isDev
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
     database: dbPath,
     synchronize: true, // Solo en desarrollo — desactivar en producción
     logging: true,
-    entities: [Task],
+    entities: [Task, Tag],
 });
 
 export async function initDatabase(): Promise<void> {

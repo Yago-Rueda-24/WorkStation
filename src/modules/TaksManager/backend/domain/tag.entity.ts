@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Task } from "./task.entity";
 
 @Entity()
 export class Tag {
@@ -10,4 +11,7 @@ export class Tag {
 
     @Column()
     color!: string;
+
+    @OneToMany(() => Task, (task) => task.tag)
+    tasks!: Task[];
 }
