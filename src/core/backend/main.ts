@@ -7,6 +7,7 @@ import path from 'node:path'
 import { TaskManagerModule } from '../../modules/TaksManager/TaskManager.module'
 import pc from 'picocolors'
 import { initDatabase } from './database'
+import { setupAutoUpdater, checkForUpdates, downloadUpdate, quitAndInstall } from './updater'
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -114,5 +115,13 @@ app.whenReady().then(async () => {
                 (mod as unknown as IEventPort).setupEvents(win!);
             }
         });
+
+        // --- Auto-Updater ---
+        setupAutoUpdater(win);
     }
+
+    // IPC handlers for manual update control from the renderer
+    ipcMain.handle('updater:check', () => checkForUpdates());
+    ipcMain.handle('updater:download', () => downloadUpdate());
+    ipcMain.handle('updater:quit-and-install', () => quitAndInstall());
 })

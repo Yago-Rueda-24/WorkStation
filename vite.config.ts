@@ -35,7 +35,7 @@ export default defineConfig({
           ],
           build: {
             rollupOptions: {
-              external: ['better-sqlite3', 'typeorm', 'reflect-metadata'],
+              external: ['better-sqlite3', 'typeorm', 'reflect-metadata', 'electron-updater'],
             },
           },
         },

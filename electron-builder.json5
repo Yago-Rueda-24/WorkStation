@@ -39,5 +39,14 @@
       "AppImage"
     ],
     "artifactName": "${productName}-Linux-${version}.${ext}"
-  }
+  },
+  // --- Auto-Updater publish configuration ---
+  // Fill in your GitHub account and repository name below
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "Yago-Rueda-24",
+      "repo": "WorkStation"
+    }
+  ]
 }
