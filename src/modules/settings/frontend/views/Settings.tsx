@@ -49,24 +49,24 @@ function Settings() {
 
             if (result.available) {
                 sileo.success({
-                    title: 'Update Available',
-                    description: `Version ${result.version} is ready to download.`,
+                    title: 'Actualización disponible',
+                    description: `La versión ${result.version} está lista para descargar. Al pulsar 'Descargar' se bajará en segundo plano.`,
                     button: {
-                        title: 'Download',
+                        title: 'Descargar',
                         onClick: () => (window as any).api.updater.downloadUpdate(),
                     },
                 })
             } else {
                 sileo.info({
-                    title: 'Up to Date',
-                    description: 'You are running the latest version.',
+                    title: 'Aplicación actualizada',
+                    description: 'Estás utilizando la última versión de WorkStation.',
                     duration: 4000,
                 })
             }
         } catch {
             sileo.error({
-                title: 'Update Error',
-                description: 'Could not check for updates. Try again later.',
+                title: 'Error de actualización',
+                description: 'No se ha podido comprobar si hay actualizaciones. Inténtalo más tarde.',
                 duration: 5000,
             })
         } finally {
