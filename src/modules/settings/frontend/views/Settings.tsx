@@ -9,48 +9,14 @@ function Settings() {
         setChecking(true)
 
         try {
-            // Create a promise that resolves when the updater responds
-            const result = await new Promise<{ available: boolean; version?: string }>((resolve, reject) => {
-                const api = (window as any).api
+            // Await the promise returned by the main process
+            const result = await (window as any).api.updater.checkForUpdates()
+            const isAvailable = result && result.updateInfo
 
-                const timeout = setTimeout(() => {
-                    offAvailable()
-                    offNotAvailable()
-                    offError()
-                    reject(new Error('Timeout'))
-                }, 15000)
-
-                const offAvailable = api.updater.onUpdateAvailable((info: any) => {
-                    clearTimeout(timeout)
-                    offAvailable()
-                    offNotAvailable()
-                    offError()
-                    resolve({ available: true, version: info.version })
-                })
-
-                const offNotAvailable = api.updater.onUpdateNotAvailable(() => {
-                    clearTimeout(timeout)
-                    offAvailable()
-                    offNotAvailable()
-                    offError()
-                    resolve({ available: false })
-                })
-
-                const offError = api.updater.onError((message: string) => {
-                    clearTimeout(timeout)
-                    offAvailable()
-                    offNotAvailable()
-                    offError()
-                    reject(new Error(message))
-                })
-
-                api.updater.checkForUpdates()
-            })
-
-            if (result.available) {
+            if (isAvailable && result.updateInfo.version !== '0.0.0') { // 0.0.0 check is just fallback, electron-updater handles the actual diff
                 sileo.success({
                     title: 'Actualización disponible',
-                    description: `La versión ${result.version} está lista para descargar. Al pulsar 'Descargar' se bajará en segundo plano.`,
+                    description: `La versión ${result.updateInfo.version} está lista para descargar. Al pulsar 'Descargar' se bajará en segundo plano.`,
                     button: {
                         title: 'Descargar',
                         onClick: () => (window as any).api.updater.downloadUpdate(),

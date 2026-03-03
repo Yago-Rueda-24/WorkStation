@@ -58,13 +58,17 @@ export function setupAutoUpdater(win: BrowserWindow): void {
 
 /**
  * Manually triggers a check for updates.
+ * Returns a promise that resolves with the update check result.
  */
-export function checkForUpdates(): void {
-    autoUpdater.checkForUpdates().catch((err) => {
+export async function checkForUpdates(): Promise<any> {
+    try {
+        const result = await autoUpdater.checkForUpdates()
+        return result
+    } catch (err: any) {
         console.error(pc.red(`[Updater] Failed to check for updates: ${err.message}`))
-    })
+        throw err
+    }
 }
-
 /**
  * Starts downloading the available update.
  */
