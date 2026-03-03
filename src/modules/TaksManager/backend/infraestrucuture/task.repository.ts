@@ -10,23 +10,37 @@ export class TaskRepository implements ITaskPort {
     }
 
     async findAll(): Promise<Task[]> {
-        return this.repository.find({ order: { createdAt: 'DESC' } });
+        return this.repository.find({
+            relations: { tag: true },
+            order: { createdAt: 'DESC' }
+        });
     }
 
     async findById(id: number): Promise<Task | null> {
-        return this.repository.findOneBy({ id });
+        return this.repository.findOne({
+            where: { id },
+            relations: { tag: true }
+        });
     }
 
     async create(data: CreateTaskData): Promise<Task> {
-        const task = this.repository.create(data);
+        const { tagId, ...rest } = data;
+        const task = this.repository.create(rest);
+        if (tagId !== undefined) {
+            task.tag = tagId ? { id: tagId } as any : null;
+        }
         return this.repository.save(task);
     }
 
     async update(id: number, data: UpdateTaskData): Promise<Task | null> {
+        const { tagId, ...rest } = data;
         const task = await this.repository.findOneBy({ id });
         if (!task) return null;
 
-        Object.assign(task, data);
+        Object.assign(task, rest);
+        if (tagId !== undefined) {
+            task.tag = tagId ? { id: tagId } as any : null;
+        }
         return this.repository.save(task);
     }
 

@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from 'typeorm';
+import { Tag } from './tag.entity';
 
 export enum TaskStatus {
     PENDING = 'pending',
@@ -19,6 +20,9 @@ export class Task {
 
     @Column({ default: false })
     completed!: boolean;
+
+    @ManyToOne(() => Tag, (tag) => tag.tasks, { nullable: true, onDelete: 'SET NULL' })
+    tag?: Tag | null;
 
     @Column({ type: 'varchar', default: TaskStatus.PENDING })
     status!: TaskStatus;

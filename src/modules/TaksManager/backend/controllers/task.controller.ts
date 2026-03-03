@@ -25,6 +25,11 @@ export class TaskController {
             status: task.status,
             dueDate: task.dueDate,
             createdAt: createdAtStr,
+            tag: task.tag ? {
+                id: task.tag.id,
+                name: task.tag.name,
+                color: task.tag.color
+            } : null,
         };
     }
 
@@ -38,12 +43,12 @@ export class TaskController {
         return task ? this.serialize(task) : null;
     }
 
-    async handleCreate(payload: { title: string; description?: string; status?: TaskStatus; dueDate?: string | null }): Promise<Record<string, unknown>> {
+    async handleCreate(payload: { title: string; description?: string; status?: TaskStatus; dueDate?: string | null; tagId?: number | null }): Promise<Record<string, unknown>> {
         const task = await this.taskService.create(payload);
         return this.serialize(task);
     }
 
-    async handleUpdate(payload: { id: number; title?: string; completed?: boolean; description?: string; status?: TaskStatus; dueDate?: string | null }): Promise<Record<string, unknown> | null> {
+    async handleUpdate(payload: { id: number; title?: string; completed?: boolean; description?: string; status?: TaskStatus; dueDate?: string | null; tagId?: number | null }): Promise<Record<string, unknown> | null> {
         const { id, ...data } = payload;
         const task = await this.taskService.update(id, data);
         return task ? this.serialize(task) : null;

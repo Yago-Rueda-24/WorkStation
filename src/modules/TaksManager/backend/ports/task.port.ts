@@ -5,6 +5,7 @@ export interface CreateTaskData {
     description?: string;
     status?: TaskStatus;
     dueDate?: string | null;
+    tagId?: number | null;
 }
 
 export interface UpdateTaskData {
@@ -13,6 +14,7 @@ export interface UpdateTaskData {
     description?: string | null;
     status?: TaskStatus;
     dueDate?: string | null;
+    tagId?: number | null;
 }
 
 export interface ITaskPort {
