@@ -170,12 +170,18 @@ const CalendarView: React.FC<CalendarViewProps> = ({ tasks, navigateToDate, onTa
                                             onClick={() => onTaskClick(task)}
                                             className={`
                                                 text-[10px] font-medium px-1.5 py-0.5 rounded border truncate text-left
-                                                transition-all hover:brightness-125 cursor-pointer
+                                                transition-all hover:brightness-125 cursor-pointer flex items-center gap-1
                                                 ${getStatusBorder(task.status)}
                                             `}
                                             title={task.title}
                                         >
-                                            {task.title}
+                                            {task.tag && (
+                                                <span
+                                                    className="w-1.5 h-1.5 rounded-full shrink-0"
+                                                    style={{ backgroundColor: task.tag.color }}
+                                                />
+                                            )}
+                                            <span className="truncate">{task.title}</span>
                                         </button>
                                     ))}
                                     {dayTasks.length > 3 && (

@@ -229,11 +229,11 @@ const KanbanView: React.FC<KanbanViewProps> = ({ tasks, onTaskClick, onDeleteTas
                                                 draggable
                                                 onDragStart={(e) => handleDragStart(e, task.id)}
                                                 onDragEnd={handleDragEnd}
-                                                className={`bg-slate-800/60 border border-white/10 rounded-xl p-4 transition-all duration-200 ${column.cardHoverShadow} ${column.cardHoverBorder} hover:bg-slate-800/80 group cursor-grab active:cursor-grabbing ${isDragging ? 'opacity-40 scale-95' : ''}`}
+                                                className={`relative bg-slate-800/60 border border-white/10 rounded-xl p-4 transition-all duration-200 ${column.cardHoverShadow} ${column.cardHoverBorder} hover:bg-slate-800/80 group cursor-grab active:cursor-grabbing ${isDragging ? 'opacity-40 scale-95' : ''}`}
                                             >
                                                 {/* Drag Handle + Title */}
-                                                <div className="flex items-start gap-2">
-                                                    <span className="text-slate-500 mt-0.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="flex items-start">
+                                                    <span className="absolute left-1.5 top-4.5 text-slate-500 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                                                             <circle cx="9" cy="5" r="2" /><circle cx="15" cy="5" r="2" /><circle cx="9" cy="12" r="2" /><circle cx="15" cy="12" r="2" /><circle cx="9" cy="19" r="2" /><circle cx="15" cy="19" r="2" />
                                                         </svg>
@@ -248,6 +248,21 @@ const KanbanView: React.FC<KanbanViewProps> = ({ tasks, onTaskClick, onDeleteTas
                                                     <p className="text-[#94a3b8] text-xs leading-relaxed m-0 mt-2 line-clamp-2">
                                                         {task.description}
                                                     </p>
+                                                )}
+
+                                                {task.tag && (
+                                                    <div className="mt-2 flex">
+                                                        <span
+                                                            className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider border"
+                                                            style={{
+                                                                backgroundColor: `${task.tag.color}15`,
+                                                                color: task.tag.color,
+                                                                borderColor: `${task.tag.color}30`
+                                                            }}
+                                                        >
+                                                            {task.tag.name}
+                                                        </span>
+                                                    </div>
                                                 )}
 
                                                 {/* Task Footer */}

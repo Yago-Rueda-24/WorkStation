@@ -8,20 +8,27 @@ export interface Task {
     completed: boolean;
     dueDate: string | null;
     createdAt: string;
+    tag?: {
+        id: number;
+        name: string;
+        color: string;
+    } | null;
 }
 
 interface TaskDetailPanelProps {
     task: Task | null;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (updatedTask: Task) => void;
-    onCreate: (newTask: { title: string; description: string; status: Task['status']; dueDate: string | null }) => void;
+    onSave: (updatedTask: Task, tagId?: number | null) => void;
+    onCreate: (newTask: { title: string; description: string; status: Task['status']; dueDate: string | null; tagId?: number | null }) => void;
     onDelete: (taskId: number) => void;
 }
 
 const TaskDetailPanel: React.FC<TaskDetailPanelProps> = ({ task, isOpen, onClose, onSave, onCreate, onDelete }) => {
     const isCreateMode = task === null;
     const [editTask, setEditTask] = useState<Task | null>(null);
+    const [tags, setTags] = useState<any[]>([]);
+    const [selectedTagId, setSelectedTagId] = useState<number | null>(null);
 
     useEffect(() => {
         if (isOpen) {
@@ -33,7 +40,20 @@ const TaskDetailPanel: React.FC<TaskDetailPanelProps> = ({ task, isOpen, onClose
                 completed: false,
                 dueDate: null,
                 createdAt: new Date().toISOString(),
+                tag: null,
             });
+            setSelectedTagId(task?.tag?.id || null);
+
+            // Fetch tags
+            const fetchTags = async () => {
+                try {
+                    const allTags = await (window as any).api.taskmanager.handleTagGetAll();
+                    setTags(allTags);
+                } catch (err) {
+                    console.error('[TaskManager] Failed to fetch tags:', err);
+                }
+            };
+            fetchTags();
         }
     }, [task, isOpen]);
 
@@ -62,9 +82,10 @@ const TaskDetailPanel: React.FC<TaskDetailPanelProps> = ({ task, isOpen, onClose
                     description: editTask.description ?? '',
                     status: editTask.status,
                     dueDate: editTask.dueDate,
+                    tagId: selectedTagId,
                 });
             } else {
-                onSave(editTask);
+                onSave(editTask, selectedTagId);
             }
             onClose();
         }
@@ -151,6 +172,22 @@ const TaskDetailPanel: React.FC<TaskDetailPanelProps> = ({ task, isOpen, onClose
                                     onChange={(e) => handleChange('dueDate', e.target.value || null as any)}
                                     className="w-full bg-slate-800 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-medium [color-scheme:dark]"
                                 />
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold text-slate-300">Tag</label>
+                                <select
+                                    value={selectedTagId || ''}
+                                    onChange={(e) => setSelectedTagId(e.target.value ? parseInt(e.target.value) : null)}
+                                    className="w-full bg-slate-800 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all appearance-none cursor-pointer"
+                                >
+                                    <option value="">No Tag</option>
+                                    {tags.map(tag => (
+                                        <option key={tag.id} value={tag.id}>
+                                            {tag.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                         </>
                     )}

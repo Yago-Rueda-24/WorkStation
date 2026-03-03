@@ -4,11 +4,19 @@ import TaskDetailPanel, { Task } from '../components/TaskDetailPanel';
 import TaskListView from './TaskListView';
 import CalendarView from './CalendarView';
 import KanbanView from './KanbanView';
+import TagsView from './TagsView';
 
 const api = (window as any).api.taskmanager;
 
+export interface Tag {
+    id: number;
+    name: string;
+    color: string;
+}
+
 function TaskManagerView() {
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [tags, setTags] = useState<Tag[]>([]);
     const [currentFilter, setCurrentFilter] = useState<TaskFilter>('all');
     const [editingTask, setEditingTask] = useState<Task | null>(null);
     const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -27,9 +35,19 @@ function TaskManagerView() {
         }
     }, []);
 
+    const fetchTags = useCallback(async () => {
+        try {
+            const data = await api.handleTagGetAll();
+            setTags(data);
+        } catch (err) {
+            console.error('[TaskManager] Failed to fetch tags:', err);
+        }
+    }, []);
+
     useEffect(() => {
         fetchTasks();
-    }, [fetchTasks]);
+        fetchTags();
+    }, [fetchTasks, fetchTags]);
 
     // ── CRUD handlers ──────────────────────────────────────────────
     const handleNewTask = () => {
@@ -37,7 +55,7 @@ function TaskManagerView() {
         setIsPanelOpen(true);
     };
 
-    const handleCreateTask = async (newTask: { title: string; description: string; status: string; dueDate: string | null }) => {
+    const handleCreateTask = async (newTask: { title: string; description: string; status: string; dueDate: string | null; tagId?: number | null }) => {
         try {
             await api.handleCreate(newTask);
             await fetchTasks();
@@ -46,7 +64,7 @@ function TaskManagerView() {
         }
     };
 
-    const handleSaveTask = async (updatedTask: Task) => {
+    const handleSaveTask = async (updatedTask: Task, tagId?: number | null) => {
         try {
             await api.handleUpdate({
                 id: updatedTask.id,
@@ -55,6 +73,7 @@ function TaskManagerView() {
                 status: updatedTask.status,
                 completed: updatedTask.status === 'done',
                 dueDate: updatedTask.dueDate,
+                tagId: tagId !== undefined ? tagId : (updatedTask.tag?.id || null),
             });
             await fetchTasks();
         } catch (err) {
@@ -68,6 +87,35 @@ function TaskManagerView() {
             await fetchTasks();
         } catch (err) {
             console.error('[TaskManager] Failed to delete task:', err);
+        }
+    };
+
+    const handleCreateTag = async (tag: { name: string; color: string }) => {
+        try {
+            await api.handleTagCreate(tag);
+            await fetchTags();
+        } catch (err) {
+            console.error('[TaskManager] Failed to create tag:', err);
+        }
+    };
+
+    const handleSaveTag = async (tag: Tag) => {
+        try {
+            await api.handleTagUpdate(tag);
+            await fetchTags();
+            await fetchTasks(); // Refresh tasks as they might have this tag
+        } catch (err) {
+            console.error('[TaskManager] Failed to update tag:', err);
+        }
+    };
+
+    const handleDeleteTag = async (tagId: number) => {
+        try {
+            await api.handleTagDelete({ id: tagId });
+            await fetchTags();
+            await fetchTasks(); // Refresh tasks as they might have lost this tag
+        } catch (err) {
+            console.error('[TaskManager] Failed to delete tag:', err);
         }
     };
 
@@ -126,6 +174,15 @@ function TaskManagerView() {
                         onDeleteTask={handleDeleteTask}
                         onNewTask={handleNewTask}
                         onStatusChange={handleStatusChange}
+                    />
+                );
+            case 'tags':
+                return (
+                    <TagsView
+                        tags={tags}
+                        onCreateTag={handleCreateTag}
+                        onSaveTag={handleSaveTag}
+                        onDeleteTag={handleDeleteTag}
                     />
                 );
             case 'list':
