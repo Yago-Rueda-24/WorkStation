@@ -4,7 +4,7 @@ import { TaskController } from './backend/controllers/task.controller';
 import { TaskService } from './backend/services/task.service';
 import { TaskRepository } from './backend/infraestrucuture/task.repository';
 import { AppDataSource } from '../../core/backend/database';
-import { TagController } from './backend/controllers/tag.comtroller';
+import { TagController } from './backend/controllers/tag.controller';
 import { TagService } from './backend/services/tag.service';
 import { TagRepository } from './backend/infraestrucuture/tag.repository';
 
