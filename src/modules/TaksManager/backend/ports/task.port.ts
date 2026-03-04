@@ -25,4 +25,5 @@ export interface ITaskPort {
     update(id: number, data: UpdateTaskData): Promise<Task | null>;
     delete(id: number): Promise<boolean>;
     deleteCompletedTasks(): Promise<boolean>;
+    deleteCompletedTasksOlderThan(date: Date): Promise<number>;
 }

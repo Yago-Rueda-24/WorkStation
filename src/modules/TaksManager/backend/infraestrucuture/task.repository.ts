@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
 import { Task, TaskStatus } from '../domain/task.entity';
 import { ITaskPort, CreateTaskData, UpdateTaskData } from '../ports/task.port';
-
+import { LessThan } from 'typeorm';
 export class TaskRepository implements ITaskPort {
     private readonly repository: Repository<Task>;
 
@@ -53,5 +53,14 @@ export class TaskRepository implements ITaskPort {
     async deleteCompletedTasks(): Promise<boolean> {
         const result = await this.repository.delete({ status: TaskStatus.DONE });
         return (result.affected ?? 0) > 0;
+    }
+
+    async deleteCompletedTasksOlderThan(date: Date): Promise<number> {
+
+        const result = await this.repository.delete({
+            status: TaskStatus.DONE,
+            completedAt: LessThan(date)
+        });
+        return result.affected ?? 0;
     }
 }

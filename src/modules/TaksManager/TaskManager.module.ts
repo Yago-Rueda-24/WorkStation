@@ -20,14 +20,14 @@ export class TaskManagerModule extends BaseModule {
     constructor() {
         super();
         const repository = new TaskRepository(AppDataSource);
-        const service = new TaskService(repository);
+        const settingsRepository = new TaskSettingsRepository(AppDataSource);
+        const service = new TaskService(repository, settingsRepository);
         this.controller = new TaskController(service);
 
         const tagRepository = new TagRepository(AppDataSource);
         const tagService = new TagService(tagRepository);
         this.tagController = new TagController(tagService);
 
-        const settingsRepository = new TaskSettingsRepository(AppDataSource);
         const settingsService = new TaskSettingsService(settingsRepository);
         this.settingsController = new TaskSettingsController(settingsService);
     }

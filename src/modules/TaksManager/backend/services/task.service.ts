@@ -1,11 +1,14 @@
 import { Task, TaskStatus } from '../domain/task.entity';
+import { ITaskSettingsPort } from '../ports/task-settings.port';
 import { ITaskPort, CreateTaskData, UpdateTaskData } from '../ports/task.port';
 
 export class TaskService {
     private readonly taskPort: ITaskPort;
+    private readonly taskSettingsPort: ITaskSettingsPort
 
-    constructor(taskPort: ITaskPort) {
+    constructor(taskPort: ITaskPort, taskSettingsPort: ITaskSettingsPort) {
         this.taskPort = taskPort;
+        this.taskSettingsPort = taskSettingsPort;
     }
 
     async getAll(): Promise<Task[]> {
@@ -18,6 +21,16 @@ export class TaskService {
 
     async eliminateCompletedTasks(): Promise<void> {
         await this.taskPort.deleteCompletedTasks();
+    }
+
+    async eliminateCompletedTasksAutomatically(): Promise<void> {
+        const settings = await this.taskSettingsPort.getSettings();
+        if (!settings || !settings.autoDeleteCompletedTasks) return;
+
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - settings.autoDeleteDaysPassed);
+
+        await this.taskPort.deleteCompletedTasksOlderThan(cutoffDate);
     }
 
     async create(data: CreateTaskData): Promise<Task> {
@@ -43,3 +56,4 @@ export class TaskService {
         return this.taskPort.delete(id);
     }
 }
+
