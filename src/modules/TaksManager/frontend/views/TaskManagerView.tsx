@@ -190,6 +190,7 @@ function TaskManagerView() {
                 return (
                     <TaskListView
                         tasks={filteredTasks}
+                        tags={tags}
                         loading={loading}
                         currentFilter={currentFilter}
                         onTaskClick={handleOpenPanel}

@@ -1,12 +1,17 @@
 import { Task } from '../components/TaskDetailPanel';
+import { useMemo, useState } from 'react';
+import { Tag } from './TaskManagerView';
 
 interface TaskListViewProps {
     tasks: Task[];
+    tags: Tag[];
     loading: boolean;
     currentFilter: string;
     onTaskClick: (task: Task) => void;
     onDeleteTask: (taskId: number) => void;
 }
+
+
 
 const getStatusColor = (status: Task['status']) => {
     switch (status) {
@@ -36,15 +41,46 @@ const formatDate = (dateString: string) => {
     }).format(date);
 };
 
-function TaskListView({ tasks, loading, currentFilter, onTaskClick, onDeleteTask }: TaskListViewProps) {
+
+
+function TaskListView({ tasks, loading, currentFilter, onTaskClick, onDeleteTask, tags }: TaskListViewProps) {
+
+    const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
+    const handleTagChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const filter: number = Number(e.target.value);
+        if (filter === 0) {
+            setSelectedTag(null);
+        } else {
+            setSelectedTag(tags.find(tag => tag.id === filter) || null);
+        }
+    };
+
+    const filteredTasks = useMemo(() => {
+        if (!selectedTag) return tasks;
+        return tasks.filter(task => task.tag?.id === selectedTag.id);
+    }, [tasks, selectedTag]);
+
     return (
         <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-y-auto pr-2">
             <header className="mb-6 text-left shrink-0 mt-6">
                 <h1 className="text-4xl font-extrabold m-0 bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent tracking-tight">Tasks</h1>
-                <p className="text-[#94a3b8] text-base mt-2 flex items-center gap-2">
+                <p className="text-[#94a3b8] text-base mt-2 flex items-center gap-4">
                     <span>Gestiona tus tareas diarias.</span>
                     <span className="opacity-50">•</span>
-                    <span>Showing {tasks.length} {currentFilter !== 'all' ? currentFilter : ''} task(s)</span>
+                    <span className="flex items-center gap-3">
+                        <span>Showing {filteredTasks.length} {selectedTag ? selectedTag.name : currentFilter} task(s)</span>
+                        <select
+                            name="filter"
+                            id="filter"
+                            onChange={handleTagChange}
+                            className="p-1 px-2 border border-white/10 rounded-lg bg-slate-800/50 text-white text-xs w-32 focus:outline-none focus:ring-1 focus:ring-blue-500/50"
+                        >
+                            <option value="0">All</option>
+                            {tags.map(tag => (
+                                <option value={tag.id}>{tag.name}</option>
+                            ))}
+                        </select>
+                    </span>
                 </p>
             </header>
 
@@ -60,7 +96,7 @@ function TaskListView({ tasks, loading, currentFilter, onTaskClick, onDeleteTask
                         <p className="text-sm mt-1">There are no tasks matching the current filter.</p>
                     </div>
                 ) : (
-                    tasks.map(task => (
+                    filteredTasks.map(task => (
                         <div
                             key={task.id}
                             className="bg-slate-800/50 backdrop-blur-xl border border-white/10 rounded-2xl p-5 transition-all duration-200 ease-in-out hover:shadow-[0_0_30px_rgba(59,130,246,0.12)] hover:border-blue-500/20 hover:bg-slate-800/70 shrink-0 cursor-default"
