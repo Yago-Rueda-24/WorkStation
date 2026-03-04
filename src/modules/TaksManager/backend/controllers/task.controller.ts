@@ -30,6 +30,9 @@ export class TaskController {
                 name: task.tag.name,
                 color: task.tag.color
             } : null,
+            completedAt: task.completedAt instanceof Date
+                ? task.completedAt.toISOString()
+                : task.completedAt ? new Date(String(task.completedAt)).toISOString() : null,
         };
     }
 

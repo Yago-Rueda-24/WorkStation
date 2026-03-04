@@ -15,6 +15,7 @@ export interface UpdateTaskData {
     status?: TaskStatus;
     dueDate?: string | null;
     tagId?: number | null;
+    completedAt?: Date | null;
 }
 
 export interface ITaskPort {

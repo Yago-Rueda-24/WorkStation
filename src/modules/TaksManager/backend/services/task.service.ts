@@ -1,4 +1,4 @@
-import { Task } from '../domain/task.entity';
+import { Task, TaskStatus } from '../domain/task.entity';
 import { ITaskPort, CreateTaskData, UpdateTaskData } from '../ports/task.port';
 
 export class TaskService {
@@ -25,7 +25,18 @@ export class TaskService {
     }
 
     async update(id: number, data: UpdateTaskData): Promise<Task | null> {
-        return this.taskPort.update(id, data);
+        const existingTask = await this.getById(id);
+        if (!existingTask) return null;
+
+        const updatedData = { ...data };
+
+        if (data.status === TaskStatus.DONE && existingTask.status !== TaskStatus.DONE) {
+            updatedData.completedAt = new Date();
+        } else if (data.status && data.status !== TaskStatus.DONE && existingTask.status === TaskStatus.DONE) {
+            updatedData.completedAt = null;
+        }
+
+        return this.taskPort.update(id, updatedData);
     }
 
     async delete(id: number): Promise<boolean> {
