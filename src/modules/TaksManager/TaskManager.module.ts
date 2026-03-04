@@ -7,11 +7,15 @@ import { AppDataSource } from '../../core/backend/database';
 import { TagController } from './backend/controllers/tag.controller';
 import { TagService } from './backend/services/tag.service';
 import { TagRepository } from './backend/infraestrucuture/tag.repository';
+import { TaskSettingsController } from './backend/controllers/task-settings.controller';
+import { TaskSettingsService } from './backend/services/task-settings.service';
+import { TaskSettingsRepository } from './backend/infraestrucuture/task-settings.repository';
 
 export class TaskManagerModule extends BaseModule {
     readonly prefix = 'taskmanager';
     private controller: TaskController;
     private tagController: TagController;
+    private settingsController: TaskSettingsController;
 
     constructor() {
         super();
@@ -22,6 +26,10 @@ export class TaskManagerModule extends BaseModule {
         const tagRepository = new TagRepository(AppDataSource);
         const tagService = new TagService(tagRepository);
         this.tagController = new TagController(tagService);
+
+        const settingsRepository = new TaskSettingsRepository(AppDataSource);
+        const settingsService = new TaskSettingsService(settingsRepository);
+        this.settingsController = new TaskSettingsController(settingsService);
     }
 
     getHandlers(): Record<string, Function> {
@@ -35,6 +43,11 @@ export class TaskManagerModule extends BaseModule {
             .filter(name => name !== 'constructor')
             .forEach(name => {
                 handlers[name] = (this.tagController as any)[name].bind(this.tagController);
+            });
+        Object.getOwnPropertyNames(TaskSettingsController.prototype)
+            .filter(name => name !== 'constructor')
+            .forEach(name => {
+                handlers[name] = (this.settingsController as any)[name].bind(this.settingsController);
             });
         return handlers;
     }

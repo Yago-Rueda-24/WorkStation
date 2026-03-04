@@ -23,4 +23,5 @@ export interface ITaskPort {
     create(data: CreateTaskData): Promise<Task>;
     update(id: number, data: UpdateTaskData): Promise<Task | null>;
     delete(id: number): Promise<boolean>;
+    deleteCompletedTasks(): Promise<boolean>;
 }
