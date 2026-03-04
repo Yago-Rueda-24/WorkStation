@@ -23,6 +23,9 @@ export class TaskSettingsService {
 
     async updateSettings(data: UpdateTaskSettingsData): Promise<TaskSettings> {
         const currentSettings = await this.getSettings();
+        if (data.autoDeleteDaysPassed && data.autoDeleteDaysPassed < 1) {
+            throw new Error('Days passed must be at least 1');
+        }
         const updated = await this.taskSettingsPort.updateSettings(currentSettings.id, data);
 
         if (!updated) {

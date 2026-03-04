@@ -5,6 +5,13 @@ import TaskListView from './TaskListView';
 import CalendarView from './CalendarView';
 import KanbanView from './KanbanView';
 import TagsView from './TagsView';
+import SettingsView from './SettingsView';
+
+export interface TaskSettings {
+    id: number;
+    autoDeleteCompletedTasks: boolean;
+    autoDeleteDaysPassed: number;
+}
 
 const api = (window as any).api.taskmanager;
 
@@ -22,6 +29,7 @@ function TaskManagerView() {
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [activeView, setActiveView] = useState<ViewMode>('list');
+    const [settings, setSettings] = useState<TaskSettings | null>(null);
 
     // ── Data fetching ──────────────────────────────────────────────
     const fetchTasks = useCallback(async () => {
@@ -44,10 +52,20 @@ function TaskManagerView() {
         }
     }, []);
 
+    const fetchSettings = useCallback(async () => {
+        try {
+            const data = await api.handleGetSettings();
+            setSettings(data);
+        } catch (err) {
+            console.error('[TaskManager] Failed to fetch settings:', err);
+        }
+    }, []);
+
     useEffect(() => {
         fetchTasks();
         fetchTags();
-    }, [fetchTasks, fetchTags]);
+        fetchSettings();
+    }, [fetchTasks, fetchTags, fetchSettings]);
 
     // ── CRUD handlers ──────────────────────────────────────────────
     const handleNewTask = () => {
@@ -137,6 +155,15 @@ function TaskManagerView() {
         }
     };
 
+    const handleUpdateSettings = async (data: Partial<TaskSettings>) => {
+        try {
+            const updated = await api.handleUpdateSettings(data);
+            setSettings(updated);
+        } catch (err) {
+            console.error('[TaskManager] Failed to update settings:', err);
+        }
+    };
+
     const handleDeleteCompletedTasks = async () => {
         try {
             await api.handleDeleteCompletedTasks();
@@ -193,6 +220,13 @@ function TaskManagerView() {
                         onCreateTag={handleCreateTag}
                         onSaveTag={handleSaveTag}
                         onDeleteTag={handleDeleteTag}
+                    />
+                );
+            case 'settings':
+                return (
+                    <SettingsView
+                        settings={settings}
+                        onUpdateSettings={handleUpdateSettings}
                     />
                 );
             case 'list':

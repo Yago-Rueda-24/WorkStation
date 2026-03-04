@@ -3,6 +3,7 @@ import { app } from 'electron';
 import path from 'node:path';
 import { Task } from '../../modules/TaksManager/backend/domain/task.entity';
 import { Tag } from '../../modules/TaksManager/backend/domain/tag.entity';
+import { TaskSettings } from '../../modules/TaksManager/backend/domain/task-settings.entity';
 
 const isDev = !!process.env['VITE_DEV_SERVER_URL'];
 const dbPath = isDev
@@ -14,7 +15,7 @@ export const AppDataSource = new DataSource({
     database: dbPath,
     synchronize: true, // Solo en desarrollo — desactivar en producción
     logging: true,
-    entities: [Task, Tag],
+    entities: [Task, Tag, TaskSettings],
 });
 
 export async function initDatabase(): Promise<void> {
