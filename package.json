@@ -1,7 +1,7 @@
 {
   "name": "workstation",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Desktop workstation application",
   "author": "Yago Rueda",
   "type": "module",
