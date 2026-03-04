@@ -16,6 +16,10 @@ export class TaskService {
         return this.taskPort.findById(id);
     }
 
+    async eliminateCompletedTasks(): Promise<void> {
+        await this.taskPort.deleteCompletedTasks();
+    }
+
     async create(data: CreateTaskData): Promise<Task> {
         return this.taskPort.create(data);
     }

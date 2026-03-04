@@ -57,4 +57,8 @@ export class TaskController {
     async handleDelete(payload: { id: number }): Promise<boolean> {
         return this.taskService.delete(payload.id);
     }
+
+    async handleDeleteCompletedTasks(): Promise<void> {
+        await this.taskService.eliminateCompletedTasks();
+    }
 }

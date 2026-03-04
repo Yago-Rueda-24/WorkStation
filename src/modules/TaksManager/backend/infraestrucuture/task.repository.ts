@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Task } from '../domain/task.entity';
+import { Task, TaskStatus } from '../domain/task.entity';
 import { ITaskPort, CreateTaskData, UpdateTaskData } from '../ports/task.port';
 
 export class TaskRepository implements ITaskPort {
@@ -22,6 +22,7 @@ export class TaskRepository implements ITaskPort {
             relations: { tag: true }
         });
     }
+
 
     async create(data: CreateTaskData): Promise<Task> {
         const { tagId, ...rest } = data;
@@ -46,6 +47,11 @@ export class TaskRepository implements ITaskPort {
 
     async delete(id: number): Promise<boolean> {
         const result = await this.repository.delete(id);
+        return (result.affected ?? 0) > 0;
+    }
+
+    async deleteCompletedTasks(): Promise<boolean> {
+        const result = await this.repository.delete({ status: TaskStatus.DONE });
         return (result.affected ?? 0) > 0;
     }
 }
