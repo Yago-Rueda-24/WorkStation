@@ -137,6 +137,15 @@ function TaskManagerView() {
         }
     };
 
+    const handleDeleteCompletedTasks = async () => {
+        try {
+            await api.handleDeleteCompletedTasks();
+            await fetchTasks();
+        } catch (err) {
+            console.error('[TaskManager] Failed to delete completed tasks:', err);
+        }
+    };
+
     // ── Panel handlers ─────────────────────────────────────────────
     const handleOpenPanel = (task: Task) => {
         setEditingTask(task);
@@ -174,6 +183,7 @@ function TaskManagerView() {
                         onDeleteTask={handleDeleteTask}
                         onNewTask={handleNewTask}
                         onStatusChange={handleStatusChange}
+                        onDeleteCompletedTasks={handleDeleteCompletedTasks}
                     />
                 );
             case 'tags':
@@ -195,6 +205,7 @@ function TaskManagerView() {
                         currentFilter={currentFilter}
                         onTaskClick={handleOpenPanel}
                         onDeleteTask={handleDeleteTask}
+                        onDeleteCompletedTasks={handleDeleteCompletedTasks}
                     />
                 );
         }

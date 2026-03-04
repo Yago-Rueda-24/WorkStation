@@ -7,6 +7,7 @@ interface KanbanViewProps {
     onDeleteTask: (taskId: number) => void;
     onNewTask: () => void;
     onStatusChange: (taskId: number, newStatus: Task['status']) => void;
+    onDeleteCompletedTasks: () => void;
 }
 
 type ColumnConfig = {
@@ -98,7 +99,7 @@ const formatDate = (dateString: string) => {
     }).format(date);
 };
 
-const KanbanView: React.FC<KanbanViewProps> = ({ tasks, onTaskClick, onDeleteTask, onStatusChange }) => {
+const KanbanView: React.FC<KanbanViewProps> = ({ tasks, onTaskClick, onDeleteTask, onStatusChange, onDeleteCompletedTasks }) => {
     const [draggedTaskId, setDraggedTaskId] = useState<number | null>(null);
     const [dropTarget, setDropTarget] = useState<Task['status'] | null>(null);
 
@@ -170,6 +171,15 @@ const KanbanView: React.FC<KanbanViewProps> = ({ tasks, onTaskClick, onDeleteTas
                     <span>{tasks.length} task(s) total</span>
                     <span className="opacity-50">•</span>
                     <span className="text-blue-400/70 text-sm">Drag & drop to change status</span>
+                    <span className="opacity-50">•</span>
+                    <button
+                        onClick={onDeleteCompletedTasks}
+                        className="flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 hover:border-red-500/30"
+                        title="Delete all completed tasks"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                        <span>Clear Done</span>
+                    </button>
                 </p>
             </header>
 

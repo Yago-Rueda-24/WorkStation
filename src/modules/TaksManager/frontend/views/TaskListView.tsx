@@ -9,6 +9,7 @@ interface TaskListViewProps {
     currentFilter: string;
     onTaskClick: (task: Task) => void;
     onDeleteTask: (taskId: number) => void;
+    onDeleteCompletedTasks: () => void;
 }
 
 
@@ -43,7 +44,7 @@ const formatDate = (dateString: string) => {
 
 
 
-function TaskListView({ tasks, loading, currentFilter, onTaskClick, onDeleteTask, tags }: TaskListViewProps) {
+function TaskListView({ tasks, loading, currentFilter, onTaskClick, onDeleteTask, onDeleteCompletedTasks, tags }: TaskListViewProps) {
 
     const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
     const handleTagChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -80,6 +81,14 @@ function TaskListView({ tasks, loading, currentFilter, onTaskClick, onDeleteTask
                                 <option value={tag.id}>{tag.name}</option>
                             ))}
                         </select>
+                        <button
+                            onClick={onDeleteCompletedTasks}
+                            className="flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 hover:border-red-500/30"
+                            title="Delete all completed tasks"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                            <span>Clear Done</span>
+                        </button>
                     </span>
                 </p>
             </header>
