@@ -44,11 +44,15 @@ contextBridge.exposeInMainWorld('api', {
         handleCreate: (payload?: any) => ipcRenderer.invoke('taskmanager:handleCreate', payload),
         handleUpdate: (payload?: any) => ipcRenderer.invoke('taskmanager:handleUpdate', payload),
         handleDelete: (payload?: any) => ipcRenderer.invoke('taskmanager:handleDelete', payload),
+        handleDeleteCompletedTasks: () => ipcRenderer.invoke('taskmanager:handleDeleteCompletedTasks'),
         // Tag handlers
         handleTagGetAll: (payload?: any) => ipcRenderer.invoke('taskmanager:handleTagGetAll', payload),
         handleTagCreate: (payload?: any) => ipcRenderer.invoke('taskmanager:handleTagCreate', payload),
         handleTagUpdate: (payload?: any) => ipcRenderer.invoke('taskmanager:handleTagUpdate', payload),
         handleTagDelete: (payload?: any) => ipcRenderer.invoke('taskmanager:handleTagDelete', payload),
+        // Settings handlers
+        handleGetSettings: () => ipcRenderer.invoke('taskmanager:handleGetSettings'),
+        handleUpdateSettings: (payload?: any) => ipcRenderer.invoke('taskmanager:handleUpdateSettings', payload),
     },
     updater: {
         // Manual actions
