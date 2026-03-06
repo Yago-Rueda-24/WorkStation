@@ -1,9 +1,8 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router'
 import { Toaster } from 'sileo'
 import MainLayout from './MainLayout'
-import Dashboard from '../../modules/sysinfo/frontend/views/Dashboard'
-import Settings from '../../modules/settings/frontend/views/Settings'
-import TaskManagerView from '../../modules/TaksManager/frontend/views/TaskManagerView'
+import Dashboard from './views/Dashboard'
+import modules from './registry/modules.tsx'
 
 function App() {
     return (
@@ -14,8 +13,13 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Navigate to="/dashboard" replace />} />
                         <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/settings" element={<Settings />} />
-                        <Route path="/tasks" element={<TaskManagerView />} />
+                        {modules.map((mod) => (
+                            <Route
+                                key={mod.id}
+                                path={mod.route}
+                                element={<mod.component />}
+                            />
+                        ))}
                     </Routes>
                 </MainLayout>
             </HashRouter>
@@ -24,4 +28,3 @@ function App() {
 }
 
 export default App
-
