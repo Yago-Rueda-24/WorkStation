@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import modules from './registry/modules.tsx';
+import { frontendModules } from '../registry/modules';
 
 interface MenuItem {
     label: string;
@@ -33,7 +33,7 @@ const TitleBar: React.FC = () => {
             label: 'View',
             items: [
                 { label: 'Dashboard', onClick: () => navigate('/dashboard') },
-                ...modules.map((mod) => ({
+                ...frontendModules.map((mod) => ({
                     label: mod.title,
                     onClick: () => navigate(mod.route)
                 }))

@@ -12,7 +12,13 @@ import { TaskSettingsService } from './backend/services/task-settings.service';
 import { TaskSettingsRepository } from './backend/infraestrucuture/task-settings.repository';
 
 export class TaskManagerModule extends BaseModule {
-    readonly prefix = 'taskmanager';
+    static readonly router = '/tasks';
+    static readonly description = 'Task Manager Module';
+    static readonly prefix = 'taskmanager';
+
+    readonly router = TaskManagerModule.router;
+    readonly description = TaskManagerModule.description;
+    readonly prefix = TaskManagerModule.prefix;
     private controller: TaskController;
     private tagController: TagController;
     private settingsController: TaskSettingsController;

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router'
-import modules from '../registry/modules.tsx'
+import { frontendModules } from '../../registry/modules'
 
 function Dashboard() {
     const navigate = useNavigate()
@@ -14,7 +14,7 @@ function Dashboard() {
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-                {modules.map((mod) => (
+                {frontendModules.map((mod) => (
                     <button
                         key={mod.id}
                         onClick={() => navigate(mod.route)}

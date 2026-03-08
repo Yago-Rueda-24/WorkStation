@@ -1,13 +1,12 @@
 import 'reflect-metadata'
 import { app, BrowserWindow, ipcMain } from 'electron'
-import { SysInfoModule } from '../../modules/sysinfo/sysinfo.module'
 import { IEventPort, BaseModule } from '../../shared/domain/ports/module.port'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-import { TaskManagerModule } from '../../modules/TaksManager/TaskManager.module'
 import pc from 'picocolors'
 import { initDatabase } from './database'
 import { setupAutoUpdater, checkForUpdates, downloadUpdate, quitAndInstall } from './updater'
+import { backendModules } from '../registry/modules.backend'
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -86,10 +85,7 @@ app.on('activate', () => {
 app.whenReady().then(async () => {
     await initDatabase();
 
-    const modules: BaseModule[] = [
-        new SysInfoModule(),
-        new TaskManagerModule(),
-    ];
+    const modules: BaseModule[] = backendModules.map(reg => reg.create());
 
     modules.forEach(mod => {
         console.log(pc.cyan("Found module ") + pc.bold(mod.prefix));

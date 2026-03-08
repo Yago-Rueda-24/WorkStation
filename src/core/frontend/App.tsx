@@ -2,7 +2,7 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router'
 import { Toaster } from 'sileo'
 import MainLayout from './MainLayout'
 import Dashboard from './views/Dashboard'
-import modules from './registry/modules.tsx'
+import { frontendModules } from '../registry/modules'
 
 function App() {
     return (
@@ -13,7 +13,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Navigate to="/dashboard" replace />} />
                         <Route path="/dashboard" element={<Dashboard />} />
-                        {modules.map((mod) => (
+                        {frontendModules.map((mod) => (
                             <Route
                                 key={mod.id}
                                 path={mod.route}

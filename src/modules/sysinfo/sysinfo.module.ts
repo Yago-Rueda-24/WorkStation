@@ -6,7 +6,13 @@ import { IEventPort, BaseModule } from '../../shared/domain/ports/module.port';
 import { BrowserWindow } from 'electron';
 
 export class SysInfoModule extends BaseModule implements IEventPort {
-    readonly prefix = 'sysinfo';
+    static readonly description = 'System Info Module';
+    static readonly router = '/sysinfo';
+    static readonly prefix = 'sysinfo';
+
+    readonly description = SysInfoModule.description;
+    readonly router = SysInfoModule.router;
+    readonly prefix = SysInfoModule.prefix;
     controller: SysInfoController;
 
     constructor() {
