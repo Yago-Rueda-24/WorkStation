@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 
 export type TaskFilter = 'all' | 'pending' | 'in_progress' | 'done';
 export type ViewMode = 'list' | 'calendar' | 'kanban' | 'tags' | 'settings';
@@ -12,6 +13,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ currentFilter, activeView, onFilterChange, onViewChange, onNewTask }) => {
+    const navigate = useNavigate();
+
     const filterItems = [
         {
             id: 'all', label: 'All Tasks', icon: (
@@ -162,14 +165,31 @@ const Sidebar: React.FC<SidebarProps> = ({ currentFilter, activeView, onFilterCh
                     </button>
                 </nav>
 
-                <div className="mt-auto pt-6 border-t border-white/10">
-                    <button
-                        onClick={onNewTask}
-                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white px-4 py-3 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/25 transition-all duration-300 hover:shadow-blue-500/40 hover:-translate-y-0.5"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        New Task
-                    </button>
+                <div className="mt-auto pt-4 flex flex-col gap-4">
+
+
+                    <div >
+                        <button
+                            onClick={onNewTask}
+                            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white px-4 py-3 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/25 transition-all duration-300 hover:shadow-blue-500/40 hover:-translate-y-0.5"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            New Task
+                        </button>
+                    </div>
+
+                    {/* Dashboard Button */}
+                    <div className="border-t border-white/10 pt-4">
+                        <button
+                            onClick={() => navigate('/')}
+                            className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-sm font-bold text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-200 group border border-transparent hover:border-red-500/20"
+                        >
+                            <span className="text-red-500 group-hover:text-red-400 transition-colors duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            </span>
+                            Dashboard
+                        </button>
+                    </div>
                 </div>
             </div>
         </aside>

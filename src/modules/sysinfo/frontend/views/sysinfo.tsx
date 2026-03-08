@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router'
 import { SysInfoEntity } from '../../backend/domain/sysinfo.entity'
 import {
     Chart as ChartJS,
@@ -25,6 +26,7 @@ ChartJS.register(
 )
 
 function SysInfo() {
+    const navigate = useNavigate();
     const MAX_DATA_POINTS = 25
     const [sysInfo, setSysInfo] = useState<SysInfoEntity | null>(null)
     const [cpuLoad, setCpuLoad] = useState<number[]>([])
@@ -101,9 +103,18 @@ function SysInfo() {
 
     return (
         <main className="flex flex-col w-full px-6">
-            <header className="mb-6 text-left">
+            <header className="mb-6 text-left w-full">
                 <h1 className="text-4xl font-extrabold m-0 bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent tracking-tight">System Station</h1>
-                <p className="text-[#94a3b8] text-base mt-2">Real-time resource monitor</p>
+                <div className="flex items-center gap-4 mt-2">
+                    <p className="text-[#94a3b8] text-base m-0">Real-time resource monitor</p>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-200 border border-transparent hover:border-red-500/20 shadow-sm"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        Dashboard
+                    </button>
+                </div>
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full mb-8">
