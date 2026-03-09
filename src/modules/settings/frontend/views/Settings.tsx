@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { sileo } from 'sileo'
 
@@ -6,38 +6,77 @@ function Settings() {
     const navigate = useNavigate()
     const [checking, setChecking] = useState(false)
 
-    const handleCheckForUpdates = async () => {
+    // Listen for update downloaded to trigger install
+    useEffect(() => {
+        const unsubscribe = (window as any).api.updater.onUpdateDownloaded(() => {
+            sileo.info({
+                title: 'Actualización lista',
+                description: 'La aplicación se reiniciará ahora para instalar la actualización.',
+                duration: 3000,
+                styles: { description: "text-black/75!" }
+            })
+            setTimeout(() => {
+                (window as any).api.updater.quitAndInstall()
+            }, 3000)
+        })
+
+        return () => {
+            if (typeof unsubscribe === 'function') {
+                unsubscribe()
+            }
+        }
+    }, [])
+
+    const handleCheckForUpdates = () => {
         if (checking) return
         setChecking(true)
 
-        try {
-            // Await the promise returned by the main process
-            const result = await (window as any).api.updater.checkForUpdates()
-            const isAvailable = result && result.updateInfo
+        let cleanedUp = false
+        let unsubAvailable: (() => void) | null = null
+        let unsubNotAvailable: (() => void) | null = null
+        let unsubError: (() => void) | null = null
 
-            if (isAvailable && result.updateInfo.version !== '0.0.0') { // 0.0.0 check is just fallback, electron-updater handles the actual diff
+        const cleanup = () => {
+            if (cleanedUp) return
+            cleanedUp = true
+            if (unsubAvailable) unsubAvailable()
+            if (unsubNotAvailable) unsubNotAvailable()
+            if (unsubError) unsubError()
+            setChecking(false)
+        }
+
+        unsubAvailable = (window as any).api.updater.onUpdateAvailable((info: any) => {
+            cleanup()
+            const userConfirmed = window.confirm(`La versión ${info.version} está disponible. ¿Deseas descargar e instalar la actualización ahora? La aplicación se reiniciará automáticamente.`)
+
+            if (userConfirmed) {
                 sileo.success({
-                    title: 'Actualización disponible',
-                    description: `La versión ${result.updateInfo.version} está lista para descargar. Al pulsar 'Descargar' se bajará en segundo plano.`,
-                    button: {
-                        title: 'Descargar',
-                        onClick: () => (window as any).api.updater.downloadUpdate(),
-                    },
+                    title: 'Descargando actualización',
+                    description: 'La actualización se está descargando en segundo plano. La aplicación se reiniciará cuando termine.',
+                    duration: 5000,
                     styles: {
                         description: "text-black/75!",
                     }
                 })
-            } else {
-                sileo.info({
-                    title: 'Aplicación actualizada',
-                    description: 'Estás utilizando la última versión de WorkStation.',
-                    duration: 4000,
-                    styles: {
-                        description: "text-black/75!",
-                    }
-                })
+                    // Trigger the download
+                    ; (window as any).api.updater.downloadUpdate()
             }
-        } catch {
+        })
+
+        unsubNotAvailable = (window as any).api.updater.onUpdateNotAvailable(() => {
+            cleanup()
+            sileo.info({
+                title: 'Aplicación actualizada',
+                description: 'Estás utilizando la última versión de WorkStation.',
+                duration: 4000,
+                styles: {
+                    description: "text-black/75!",
+                }
+            })
+        })
+
+        unsubError = (window as any).api.updater.onError(() => {
+            cleanup()
             sileo.error({
                 title: 'Error de actualización',
                 description: 'No se ha podido comprobar si hay actualizaciones. Inténtalo más tarde.',
@@ -46,9 +85,11 @@ function Settings() {
                     description: "text-black/75!",
                 }
             })
-        } finally {
-            setChecking(false)
-        }
+        })
+
+            ; (window as any).api.updater.checkForUpdates().catch(() => {
+                cleanup()
+            })
     }
 
     return (
