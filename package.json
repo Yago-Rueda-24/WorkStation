@@ -1,8 +1,8 @@
 {
-  "name": "workstation",
+  "name": "DashDog",
   "private": true,
   "version": "0.0.4",
-  "description": "Desktop workstation application",
+  "description": "DashDog es el compañero perfecto para tu escritorio. Un dashboard modular que te permite integrar y personalizar herramientas según tus necesidades",
   "author": "Yago Rueda",
   "type": "module",
   "scripts": {
