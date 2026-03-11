@@ -8,7 +8,7 @@ function Dashboard() {
         <main className="flex flex-col w-full px-6">
             <header className="mb-10 text-left">
                 <h1 className="text-4xl font-extrabold m-0 bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent tracking-tight">
-                    WorkStation
+                    DashDog
                 </h1>
                 <p className="text-[#94a3b8] text-base mt-2">Select a module to get started</p>
             </header>
