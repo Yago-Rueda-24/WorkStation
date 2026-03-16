@@ -6,15 +6,6 @@ import CarterasView from './CarterasView';
 import CuentasView from './CuentasView';
 import InversionesView from './InversionesView';
 
-const ComingSoon = ({ label }: { label: string }) => (
-    <div className="flex flex-col items-center justify-center flex-1 gap-3 text-slate-600">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-            <rect x="3" y="3" width="18" height="18" rx="3" />
-            <path d="M9 12h6M12 9v6" />
-        </svg>
-        <p className="text-sm font-medium">{label} — próximamente</p>
-    </div>
-);
 
 const FinanceTrackerView = () => {
     const [activeView, setActiveView] = useState<FinanceView>('dashboard');
