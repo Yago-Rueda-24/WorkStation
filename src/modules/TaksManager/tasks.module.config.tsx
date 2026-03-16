@@ -3,7 +3,7 @@ import { BaseFrontendConfig } from '../../core/registry/types.frontend';
 
 class TaskManagerConfig extends BaseFrontendConfig {
     id = 'tasks';
-    order = 1;
+    order = 2;
     title = 'Task Manager';
     description = 'Organize and track your tasks with boards, priorities and detailed panels.';
     route = '/tasks';
