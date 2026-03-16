@@ -1,13 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
 
-interface NuevaCarteraModalProps {
-    onClose: () => void;
-    onCreate: (nombre: string, descripcion: string) => Promise<void>;
+interface CarteraFormData {
+    nombre: string;
+    descripcion: string;
 }
 
-const NuevaCarteraModal = ({ onClose, onCreate }: NuevaCarteraModalProps) => {
-    const [nombre, setNombre] = useState('');
-    const [descripcion, setDescripcion] = useState('');
+interface CarteraFormModalProps {
+    mode: 'create' | 'edit';
+    initialData?: CarteraFormData;
+    onClose: () => void;
+    onSave: (data: CarteraFormData) => Promise<void>;
+}
+
+const CarteraFormModal = (props: CarteraFormModalProps) => {
+    const { mode, initialData, onClose, onSave } = props;
+
+
+
+    const isEdit = mode === 'edit';
+    const [nombre, setNombre] = useState(initialData?.nombre ?? '');
+    const [descripcion, setDescripcion] = useState(initialData?.descripcion ?? '');
     const [saving, setSaving] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -20,8 +32,10 @@ const NuevaCarteraModal = ({ onClose, onCreate }: NuevaCarteraModalProps) => {
         if (!nombre.trim()) return;
         setSaving(true);
         try {
-            await onCreate(nombre.trim(), descripcion.trim());
+            await onSave({ nombre: nombre.trim(), descripcion: descripcion.trim() });
             onClose();
+        } catch (err) {
+            console.error('[CarteraFormModal] Error saving:', err);
         } finally {
             setSaving(false);
         }
@@ -42,7 +56,7 @@ const NuevaCarteraModal = ({ onClose, onCreate }: NuevaCarteraModalProps) => {
                                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
                             </svg>
                         </div>
-                        <h2 className="text-base font-bold text-white">Nueva cartera</h2>
+                        <h2 className="text-base font-bold text-white">{isEdit ? 'Editar cartera' : 'Nueva cartera'}</h2>
                     </div>
                     <button
                         onClick={onClose}
@@ -112,12 +126,16 @@ const NuevaCarteraModal = ({ onClose, onCreate }: NuevaCarteraModalProps) => {
                                 <svg className="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                     <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                                 </svg>
+                            ) : isEdit ? (
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                </svg>
                             ) : (
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                     <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
                                 </svg>
                             )}
-                            Crear cartera
+                            {isEdit ? 'Guardar cambios' : 'Crear cartera'}
                         </button>
                     </div>
                 </form>
@@ -126,4 +144,4 @@ const NuevaCarteraModal = ({ onClose, onCreate }: NuevaCarteraModalProps) => {
     );
 };
 
-export default NuevaCarteraModal;
+export default CarteraFormModal;

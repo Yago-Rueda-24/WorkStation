@@ -1,8 +1,9 @@
-import { Cartera } from './cartera.types';
+import { Cartera } from '../../types/finance.types';
 
 interface CarteraCardProps {
     cartera: Cartera;
     confirmDeleteId: number | null;
+    onEdit: (cartera: Cartera) => void;
     onRequestDelete: (id: number) => void;
     onCancelDelete: () => void;
     onConfirmDelete: (id: number) => void;
@@ -11,9 +12,13 @@ interface CarteraCardProps {
 const formatCurrency = (v: number) =>
     new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(v);
 
-const CarteraCard = ({ cartera, confirmDeleteId, onRequestDelete, onCancelDelete, onConfirmDelete }: CarteraCardProps) => {
+const CarteraCard = (props: CarteraCardProps) => {
+    const { cartera, confirmDeleteId, onEdit, onRequestDelete, onCancelDelete, onConfirmDelete } = props;
+
+
+
     const confirmando = confirmDeleteId === cartera.id;
-    const numCuentas     = cartera.cuentas.filter(c => c.tipo === 'cuenta_corriente').length;
+    const numCuentas = cartera.cuentas.filter(c => c.tipo === 'cuenta_corriente').length;
     const numInversiones = cartera.cuentas.filter(c => c.tipo === 'inversion').length;
 
     return (
@@ -42,7 +47,7 @@ const CarteraCard = ({ cartera, confirmDeleteId, onRequestDelete, onCancelDelete
                     </div>
                 </div>
 
-                {/* Delete — dos pasos */}
+                {/* Acciones — editar / eliminar */}
                 {confirmando ? (
                     <div className="flex items-center gap-1.5 flex-shrink-0">
                         <button
@@ -62,21 +67,36 @@ const CarteraCard = ({ cartera, confirmDeleteId, onRequestDelete, onCancelDelete
                         </button>
                     </div>
                 ) : (
-                    <button
-                        onClick={() => onRequestDelete(cartera.id)}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center
-                            text-slate-600 hover:text-red-400 hover:bg-red-500/10
-                            opacity-0 group-hover:opacity-100
-                            transition-all duration-200 flex-shrink-0"
-                        title="Eliminar cartera"
-                    >
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="3 6 5 6 21 6" />
-                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                            <path d="M10 11v6M14 11v6" />
-                            <path d="M9 6V4h6v2" />
-                        </svg>
-                    </button>
+                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 flex-shrink-0">
+                        <button
+                            onClick={() => {
+
+                                onEdit(cartera);
+                            }}
+                            className="w-7 h-7 rounded-lg flex items-center justify-center
+                                text-slate-600 hover:text-green-400 hover:bg-green-500/10
+                                transition-all duration-200"
+                            title="Editar cartera"
+                        >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                            </svg>
+                        </button>
+                        <button
+                            onClick={() => onRequestDelete(cartera.id)}
+                            className="w-7 h-7 rounded-lg flex items-center justify-center
+                                text-slate-600 hover:text-red-400 hover:bg-red-500/10
+                                transition-all duration-200"
+                            title="Eliminar cartera"
+                        >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                <path d="M10 11v6M14 11v6" />
+                                <path d="M9 6V4h6v2" />
+                            </svg>
+                        </button>
+                    </div>
                 )}
             </div>
 

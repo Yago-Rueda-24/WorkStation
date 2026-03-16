@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import FinanceNavBar, { FinanceView } from '../components/FinanceNavBar';
+import { FinanceView } from '../types/finance.types';
+import FinanceNavBar from '../components/shared/FinanceNavBar';
 import FinanceDashboard from './FinanceDashboard';
 import CarterasView from './CarterasView';
+import CuentasView from './CuentasView';
+import InversionesView from './InversionesView';
 
 const ComingSoon = ({ label }: { label: string }) => (
     <div className="flex flex-col items-center justify-center flex-1 gap-3 text-slate-600">
@@ -23,8 +26,8 @@ const FinanceTrackerView = () => {
             <div className="flex-1 min-h-0 overflow-y-auto">
                 {activeView === 'dashboard' && <FinanceDashboard />}
                 {activeView === 'carteras' && <CarterasView />}
-                {activeView === 'cuentas' && <ComingSoon label="Cuentas" />}
-                {activeView === 'inversiones' && <ComingSoon label="Inversiones" />}
+                {activeView === 'cuentas' && <CuentasView />}
+                {activeView === 'inversiones' && <InversionesView />}
             </div>
 
         </div>

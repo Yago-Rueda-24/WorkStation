@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Cartera } from '../components/cartera.types';
-import CarteraCard from '../components/CarteraCard';
-import NuevaCarteraModal from '../components/NuevaCarteraModal';
+import { Cartera } from '../types/finance.types';
+import CarteraCard from '../components/carteras/CarteraCard';
+import CarteraFormModal from '../components/carteras/CarteraFormModal';
 
 const api = (window as any).api['finance-tracker'];
 
@@ -63,6 +63,7 @@ const CarterasView = () => {
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
+    const [editingCartera, setEditingCartera] = useState<{ id: number; nombre: string; descripcion: string } | null>(null);
 
     const fetchCarteras = async () => {
         try {
@@ -79,8 +80,14 @@ const CarterasView = () => {
         fetchCarteras();
     }, []);
 
-    const handleCreate = async (nombre: string, descripcion: string) => {
+    const handleCreate = async ({ nombre, descripcion }: { nombre: string; descripcion: string }) => {
         await api.handleCarteraCreate({ nombre, descripcion: descripcion || null });
+        await fetchCarteras();
+    };
+
+    const handleUpdate = async ({ nombre, descripcion }: { nombre: string; descripcion: string }) => {
+        if (!editingCartera) return;
+        await api.handleCarteraUpdate({ id: editingCartera.id, nombre, descripcion: descripcion || null });
         await fetchCarteras();
     };
 
@@ -94,6 +101,7 @@ const CarterasView = () => {
             setConfirmDeleteId(null);
         }
     };
+
 
     return (
         <div className="flex flex-col gap-6 p-6 pb-10">
@@ -141,6 +149,9 @@ const CarterasView = () => {
                             key={cartera.id}
                             cartera={cartera}
                             confirmDeleteId={confirmDeleteId}
+                            onEdit={c => {
+                                setEditingCartera({ id: c.id, nombre: c.nombre, descripcion: c.descripcion ?? '' });
+                            }}
                             onRequestDelete={setConfirmDeleteId}
                             onCancelDelete={() => setConfirmDeleteId(null)}
                             onConfirmDelete={handleDelete}
@@ -149,11 +160,22 @@ const CarterasView = () => {
                 </div>
             )}
 
-            {/* Modal */}
+            {/* Modal: crear */}
             {showModal && (
-                <NuevaCarteraModal
+                <CarteraFormModal
+                    mode="create"
                     onClose={() => setShowModal(false)}
-                    onCreate={handleCreate}
+                    onSave={handleCreate}
+                />
+            )}
+
+            {/* Modal: editar */}
+            {editingCartera && (
+                <CarteraFormModal
+                    mode="edit"
+                    initialData={{ nombre: editingCartera.nombre, descripcion: editingCartera.descripcion }}
+                    onClose={() => setEditingCartera(null)}
+                    onSave={handleUpdate}
                 />
             )}
         </div>
