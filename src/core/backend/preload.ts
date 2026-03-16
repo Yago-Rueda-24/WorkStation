@@ -54,6 +54,33 @@ contextBridge.exposeInMainWorld('api', {
         handleGetSettings: () => ipcRenderer.invoke('taskmanager:handleGetSettings'),
         handleUpdateSettings: (payload?: any) => ipcRenderer.invoke('taskmanager:handleUpdateSettings', payload),
     },
+    'finance-tracker': {
+        // CuentaCorriente
+        handleCuentaGetAll: () => ipcRenderer.invoke('finance-tracker:handleCuentaGetAll'),
+        handleCuentaGetById: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCuentaGetById', payload),
+        handleCuentaCreate: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCuentaCreate', payload),
+        handleCuentaUpdate: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCuentaUpdate', payload),
+        handleCuentaDelete: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCuentaDelete', payload),
+        handleCuentaGetTotalSaldo: () => ipcRenderer.invoke('finance-tracker:handleCuentaGetTotalSaldo'),
+        // Inversion
+        handleInversionGetAll: () => ipcRenderer.invoke('finance-tracker:handleInversionGetAll'),
+        handleInversionGetById: (payload: any) => ipcRenderer.invoke('finance-tracker:handleInversionGetById', payload),
+        handleInversionCreate: (payload: any) => ipcRenderer.invoke('finance-tracker:handleInversionCreate', payload),
+        handleInversionUpdate: (payload: any) => ipcRenderer.invoke('finance-tracker:handleInversionUpdate', payload),
+        handleInversionDelete: (payload: any) => ipcRenderer.invoke('finance-tracker:handleInversionDelete', payload),
+        handleInversionGetResumen: () => ipcRenderer.invoke('finance-tracker:handleInversionGetResumen'),
+        // Cartera
+        handleCarteraGetAll: () => ipcRenderer.invoke('finance-tracker:handleCarteraGetAll'),
+        handleCarteraGetById: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraGetById', payload),
+        handleCarteraCreate: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraCreate', payload),
+        handleCarteraUpdate: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraUpdate', payload),
+        handleCarteraDelete: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraDelete', payload),
+        handleCarteraAddCuenta: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraAddCuenta', payload),
+        handleCarteraAddInversion: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraAddInversion', payload),
+        handleCarteraRemoveCuenta: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraRemoveCuenta', payload),
+        handleCarteraRemoveInversion: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraRemoveInversion', payload),
+        handleCarteraGetSaldoTotal: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraGetSaldoTotal', payload),
+    },
     updater: {
         // Manual actions
         checkForUpdates: () => ipcRenderer.invoke('updater:check'),
