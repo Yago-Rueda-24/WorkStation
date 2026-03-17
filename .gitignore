@@ -28,3 +28,4 @@ dist-ssr
 /release
 database.sqlite
 .env
+.letta
