@@ -95,14 +95,15 @@ const InversionFormModal = ({
 }: InversionFormModalProps) => {
     const isEdit = mode === 'edit';
 
-    const [nombre,       setNombre]       = useState(initialData?.nombre ?? '');
-    const [tipo,         setTipo]         = useState<TipoInversion>(initialData?.tipo ?? 'acciones');
-    const [moneda,       setMoneda]       = useState(initialData?.moneda ?? 'EUR');
+    const [nombre, setNombre] = useState(initialData?.nombre ?? '');
+    const [tipo, setTipo] = useState<TipoInversion>(initialData?.tipo ?? 'acciones');
+    const [moneda, setMoneda] = useState(initialData?.moneda ?? 'EUR');
     const [valorInicial, setValorInicial] = useState(String(initialData?.valorInicial ?? 0));
-    const [saldo,        setSaldo]        = useState(String(initialData?.saldo ?? 0));
-    const [fechaInicio,  setFechaInicio]  = useState(isoToDateInput(initialData?.fechaInicio ?? null));
-    const [carteraId,    setCarteraId]    = useState<number | null>(initialData?.carteraId ?? null);
-    const [saving,       setSaving]       = useState(false);
+    const [saldo, setSaldo] = useState(String(initialData?.saldo ?? 0));
+    const [efectivoDisponible, setEfectivoDisponible] = useState(String(initialData?.efectivoDisponible ?? 0));
+    const [fechaInicio, setFechaInicio] = useState(isoToDateInput(initialData?.fechaInicio ?? null));
+    const [carteraId, setCarteraId] = useState<number | null>(initialData?.carteraId ?? null);
+    const [saving, setSaving] = useState(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => { inputRef.current?.focus(); }, []);
@@ -116,11 +117,12 @@ const InversionFormModal = ({
         setSaving(true);
         try {
             await onSave({
-                nombre:       nombre.trim(),
-                saldo:        parseFloat(saldo) || 0,
+                nombre: nombre.trim(),
+                saldo: parseFloat(saldo) || 0,
                 valorInicial: parseFloat(valorInicial) || 0,
+                efectivoDisponible: parseFloat(efectivoDisponible) || 0,
                 tipo,
-                fechaInicio:  fechaInicio ? fechaInicio : null,
+                fechaInicio: fechaInicio ? fechaInicio : null,
                 moneda,
                 carteraId,
             });
@@ -268,6 +270,35 @@ const InversionFormModal = ({
                                 Rentabilidad: {rentabilidadPreview >= 0 ? '+' : ''}{rentabilidadPreview.toFixed(2)}%
                             </div>
                         )}
+                    </div>
+
+                    {/*Efectivo*/}
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            Efectivo disponible
+                        </label>
+                        <div className="">
+                            {/*Efectivo disponible*/}
+                            <div className="flex flex-col gap-1">
+                                <span className="text-xs text-slate-600 pl-1">Efectivo disponible</span>
+                                <div className="relative">
+                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs font-medium pointer-events-none">
+                                        {moneda}
+                                    </span>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        value={efectivoDisponible}
+                                        onChange={e => setEfectivoDisponible(e.target.value)}
+                                        className="w-full bg-slate-800 border border-white/10 rounded-xl pl-10 pr-3 py-3
+                                            text-white text-sm
+                                            focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30
+                                            transition-all"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Fecha de inicio + Moneda */}

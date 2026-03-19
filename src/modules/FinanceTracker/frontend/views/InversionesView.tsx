@@ -82,8 +82,8 @@ const StatCard = ({
 }) => {
     const valueClass =
         accent === 'green' ? 'text-emerald-400' :
-        accent === 'red'   ? 'text-red-400'     :
-        'text-white';
+            accent === 'red' ? 'text-red-400' :
+                'text-white';
 
     return (
         <div className="bg-slate-800/50 backdrop-blur-xl border border-white/10 rounded-2xl px-5 py-4 flex flex-col gap-1">
@@ -97,13 +97,13 @@ const StatCard = ({
 // ─── Main View ────────────────────────────────────────────────────────────────
 
 const InversionesView = () => {
-    const [inversiones,         setInversiones]         = useState<Inversion[]>([]);
-    const [carteras,            setCarteras]            = useState<CarteraOption[]>([]);
+    const [inversiones, setInversiones] = useState<Inversion[]>([]);
+    const [carteras, setCarteras] = useState<CarteraOption[]>([]);
     const [inversionCarteraMap, setInversionCarteraMap] = useState<Map<number, { id: number; nombre: string }>>(new Map());
-    const [loading,             setLoading]             = useState(true);
-    const [showCreateModal,     setShowCreateModal]     = useState(false);
-    const [editingInversion,    setEditingInversion]    = useState<EditingInversion | null>(null);
-    const [confirmDeleteId,     setConfirmDeleteId]     = useState<number | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [editingInversion, setEditingInversion] = useState<EditingInversion | null>(null);
+    const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
 
     // ── Fetch ─────────────────────────────────────────────────────────────────
 
@@ -177,13 +177,14 @@ const InversionesView = () => {
         setEditingInversion({
             id: inversion.id,
             initialData: {
-                nombre:       inversion.nombre,
-                saldo:        inversion.saldo,
+                nombre: inversion.nombre,
+                saldo: inversion.saldo,
                 valorInicial: inversion.valorInicial,
-                tipo:         inversion.tipo,
-                fechaInicio:  inversion.fechaInicio,
-                moneda:       inversion.moneda,
-                carteraId:    carteraInfo?.id ?? null,
+                tipo: inversion.tipo,
+                efectivoDisponible: inversion.efectivoDisponible,
+                fechaInicio: inversion.fechaInicio,
+                moneda: inversion.moneda,
+                carteraId: carteraInfo?.id ?? null,
             },
         });
     };
@@ -206,9 +207,9 @@ const InversionesView = () => {
 
     // ── Computed ──────────────────────────────────────────────────────────────
 
-    const totalValor      = inversiones.reduce((acc, i) => acc + i.saldo, 0);
-    const totalInvertido  = inversiones.reduce((acc, i) => acc + i.valorInicial, 0);
-    const rentGlobal      = totalInvertido > 0
+    const totalValor = inversiones.reduce((acc, i) => acc + i.saldo, 0);
+    const totalInvertido = inversiones.reduce((acc, i) => acc + i.valorInicial, 0);
+    const rentGlobal = totalInvertido > 0
         ? ((totalValor - totalInvertido) / totalInvertido) * 100
         : 0;
 

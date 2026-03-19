@@ -183,8 +183,9 @@ const InversionCard = ({
             <div className="flex items-end justify-between gap-2">
                 <div className="flex flex-col gap-0.5">
                     <span className="text-xs text-slate-500 uppercase tracking-wider font-medium">Valor actual</span>
+                    <span className="text-xs text-slate-500 font-semibold">(Saldo + Efectivo disponible)</span>
                     <span className="text-2xl font-bold text-white tracking-tight">
-                        {formatCurrency(inversion.saldo, inversion.moneda)}
+                        {formatCurrency(inversion.saldo + inversion.efectivoDisponible, inversion.moneda)}
                     </span>
                 </div>
 
@@ -205,22 +206,37 @@ const InversionCard = ({
                 )}
             </div>
 
-            {/* Capital + Ganancia/Pérdida */}
+
             {inversion.valorInicial > 0 && (
-                <div className="flex items-center justify-between px-3 py-2 bg-white/3 rounded-xl border border-white/5">
-                    <div className="flex flex-col gap-0.5">
-                        <span className="text-xs text-slate-600">Capital invertido</span>
-                        <span className="text-sm font-semibold text-slate-400">
-                            {formatCurrency(inversion.valorInicial, inversion.moneda)}
-                        </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5 items-end">
-                        <span className="text-xs text-slate-600">
-                            {ganancia >= 0 ? 'Ganancia' : 'Pérdida'}
-                        </span>
-                        <span className={`text-sm font-semibold ${ganancia >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                            {ganancia >= 0 ? '+' : ''}{formatCurrency(ganancia, inversion.moneda)}
-                        </span>
+                <div className="flex flex-row gap-2 w-full">
+                    {/* Capital invertido */}
+                    <div className="flex-1 flex items-center justify-between px-3 py-2 bg-white/3 rounded-xl border border-white/5">
+                        <div className="flex flex-col gap-0.5">
+                            <span className="text-xs text-slate-600">Capital invertido</span>
+                            <span className="text-sm font-semibold text-slate-400">
+                                {formatCurrency(inversion.valorInicial, inversion.moneda)}
+                            </span>
+                        </div>
+                        <div className='flex flex-col gap-0.5 items-end'>
+                            <span className="text-xs text-slate-600">Saldo actual</span>
+                            <span className="text-sm font-semibold text-slate-400">
+                                {formatCurrency(inversion.saldo, inversion.moneda)}
+                            </span>
+                        </div>
+                        <div className="flex flex-col gap-0.5 items-end">
+                            <span className="text-xs text-slate-600">
+                                {ganancia >= 0 ? 'Ganancia' : 'Pérdida'}
+                            </span>
+                            <span className={`text-sm font-semibold ${ganancia >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                                {ganancia >= 0 ? '+' : ''}{formatCurrency(ganancia, inversion.moneda)}
+                            </span>
+                        </div>
+                        <div className="flex flex-col gap-0.5">
+                            <span className="text-xs text-slate-600">Efectivo en la cuenta</span>
+                            <span className="text-sm font-semibold text-slate-400">
+                                {formatCurrency(inversion.efectivoDisponible, inversion.moneda)}
+                            </span>
+                        </div>
                     </div>
                 </div>
             )}
