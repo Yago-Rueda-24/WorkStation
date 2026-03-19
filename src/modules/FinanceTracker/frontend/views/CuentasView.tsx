@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { CuentaCorriente, CarteraOption, CuentaFormData } from '../types/finance.types';
 import CuentaCard from '../components/cuentas/CuentaCard';
 import CuentaFormModal from '../components/cuentas/CuentaFormModal';
+import CuentaDetalleView from './CuentaDetalleView';
 
 const api = (window as any).api['finance-tracker'];
 
@@ -82,6 +83,7 @@ const CuentasView = () => {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [editingCuenta, setEditingCuenta]     = useState<EditingCuenta | null>(null);
     const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
+    const [selectedCuenta, setSelectedCuenta]   = useState<CuentaCorriente | null>(null);
 
     // ── Fetch ─────────────────────────────────────────────────────────────────
 
@@ -188,6 +190,18 @@ const CuentasView = () => {
     const formatEur  = (v: number) =>
         new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(v);
 
+    if (selectedCuenta) {
+        return (
+            <CuentaDetalleView 
+                cuenta={selectedCuenta} 
+                onBack={() => {
+                    setSelectedCuenta(null);
+                    fetchData(); // refrescar saldo y demás
+                }} 
+            />
+        );
+    }
+
     return (
         <div className="flex flex-col gap-6 p-6 pb-10">
 
@@ -250,6 +264,7 @@ const CuentasView = () => {
                             onRequestDelete={setConfirmDeleteId}
                             onCancelDelete={() => setConfirmDeleteId(null)}
                             onConfirmDelete={handleDelete}
+                            onViewDetails={setSelectedCuenta}
                         />
                     ))}
                 </div>

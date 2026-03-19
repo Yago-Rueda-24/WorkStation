@@ -7,6 +7,7 @@ import { TaskSettings } from '../../modules/TaksManager/backend/domain/task-sett
 import { CuentaCorriente } from '../../modules/FinanceTracker/backend/domain/cuenta-corriente.entity';
 import { Inversion } from '../../modules/FinanceTracker/backend/domain/inversion.entity';
 import { Cartera } from '../../modules/FinanceTracker/backend/domain/cartera.entity';
+import { Transaction } from '../../modules/FinanceTracker/backend/domain/transaction.entity';
 
 const isDev = !!process.env['VITE_DEV_SERVER_URL'];
 const dbPath = isDev
@@ -18,7 +19,7 @@ export const AppDataSource = new DataSource({
     database: dbPath,
     synchronize: true, // Solo en desarrollo — desactivar en producción
     logging: true,
-    entities: [Task, Tag, TaskSettings, CuentaCorriente, Inversion, Cartera],
+    entities: [Task, Tag, TaskSettings, CuentaCorriente, Inversion, Cartera, Transaction],
 });
 
 export async function initDatabase(): Promise<void> {

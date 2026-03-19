@@ -49,6 +49,25 @@ export interface CuentaFormData {
     carteraId: number | null;
 }
 
+// ── Transacción ───────────────────────────────────────────────────────────────
+
+export interface Transaction {
+    id: number;
+    nombre: string;
+    descripcion: string;
+    valor: number;
+    cuentaCorrienteId: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface TransactionFormData {
+    nombre: string;
+    descripcion: string;
+    valor: number;
+    cuentaCorrienteId: number;
+}
+
 // ── Inversión ─────────────────────────────────────────────────────────────────
 
 export type TipoInversion = 'acciones' | 'fondos' | 'cripto' | 'deposito' | 'otro';

@@ -8,6 +8,7 @@ interface CuentaCardProps {
     onRequestDelete: (id: number) => void;
     onCancelDelete: () => void;
     onConfirmDelete: (id: number) => void;
+    onViewDetails: (cuenta: CuentaCorriente) => void;
 }
 
 const formatCurrency = (value: number, moneda: string) =>
@@ -24,6 +25,7 @@ const CuentaCard = ({
     onRequestDelete,
     onCancelDelete,
     onConfirmDelete,
+    onViewDetails,
 }: CuentaCardProps) => {
     const confirmando = confirmDeleteId === cuenta.id;
 
@@ -75,6 +77,19 @@ const CuentaCard = ({
                     </div>
                 ) : (
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 flex-shrink-0">
+                        {/* Ver detalles */}
+                        <button
+                            onClick={() => onViewDetails(cuenta)}
+                            className="w-7 h-7 rounded-lg flex items-center justify-center
+                                text-slate-500 hover:text-indigo-400 hover:bg-indigo-500/10
+                                transition-all duration-150"
+                            title="Ver transacciones"
+                        >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
                         {/* Editar */}
                         <button
                             onClick={() => onEdit(cuenta)}

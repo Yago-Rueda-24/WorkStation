@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
 import { IFinanceAccount } from './finance-account.interface';
 import type { Cartera } from './cartera.entity';
+import type { Transaction } from './transaction.entity';
 
 /**
  * Representa una cuenta bancaria corriente o de ahorro del usuario.
@@ -37,4 +38,8 @@ export class CuentaCorriente implements IFinanceAccount {
     /** Cartera a la que pertenece (opcional). */
     @ManyToOne('Cartera', 'cuentasCorrientes', { nullable: true, onDelete: 'SET NULL' })
     cartera!: Cartera | null;
+
+    /** Transacciones asociadas a esta cuenta corriente. */
+    @OneToMany('Transaction', 'cuentaCorriente')
+    transacciones!: Transaction[];
 }

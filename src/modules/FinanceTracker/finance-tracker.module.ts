@@ -13,6 +13,10 @@ import { CarteraRepository } from './backend/infraestrucuture/cartera.repository
 import { CarteraService } from './backend/services/cartera.service';
 import { CarteraController } from './backend/controllers/cartera.controller';
 
+import { TransactionRepository } from './backend/infraestrucuture/transaction.repository';
+import { TransactionService } from './backend/services/transaction.service';
+import { TransactionController } from './backend/controllers/transaction.controller';
+
 export class FinanceTrackerModule extends BaseModule {
     static readonly description = 'Finance Tracker Module';
     static readonly router = '/finance-tracker';
@@ -25,6 +29,7 @@ export class FinanceTrackerModule extends BaseModule {
     private readonly cuentaController: CuentaCorrienteController;
     private readonly inversionController: InversionController;
     private readonly carteraController: CarteraController;
+    private readonly transactionController: TransactionController;
 
     constructor() {
         super();
@@ -40,12 +45,21 @@ export class FinanceTrackerModule extends BaseModule {
         const carteraRepository = new CarteraRepository(AppDataSource);
         const carteraService = new CarteraService(carteraRepository);
         this.carteraController = new CarteraController(carteraService);
+
+        const transactionRepository = new TransactionRepository(AppDataSource);
+        const transactionService = new TransactionService(transactionRepository, cuentaService);
+        this.transactionController = new TransactionController(transactionService);
     }
 
     getHandlers(): Record<string, Function> {
         const handlers: Record<string, Function> = {};
 
-        for (const controller of [this.cuentaController, this.inversionController, this.carteraController]) {
+        for (const controller of [
+            this.cuentaController,
+            this.inversionController,
+            this.carteraController,
+            this.transactionController
+        ]) {
             Object.getOwnPropertyNames(Object.getPrototypeOf(controller))
                 .filter(name => name !== 'constructor' && !name.startsWith('serialize'))
                 .forEach(name => {

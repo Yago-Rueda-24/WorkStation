@@ -80,6 +80,14 @@ contextBridge.exposeInMainWorld('api', {
         handleCarteraRemoveCuenta: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraRemoveCuenta', payload),
         handleCarteraRemoveInversion: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraRemoveInversion', payload),
         handleCarteraGetSaldoTotal: (payload: any) => ipcRenderer.invoke('finance-tracker:handleCarteraGetSaldoTotal', payload),
+        // Transaction
+        handleTransactionGetAll: () => ipcRenderer.invoke('finance-tracker:handleTransactionGetAll'),
+        handleTransactionGetByCuenta: (payload: any) => ipcRenderer.invoke('finance-tracker:handleTransactionGetByCuenta', payload),
+        handleTransactionGetByCuentaAndMonth: (payload: any) => ipcRenderer.invoke('finance-tracker:handleTransactionGetByCuentaAndMonth', payload),
+        handleTransactionGetById: (payload: any) => ipcRenderer.invoke('finance-tracker:handleTransactionGetById', payload),
+        handleTransactionCreate: (payload: any) => ipcRenderer.invoke('finance-tracker:handleTransactionCreate', payload),
+        handleTransactionUpdate: (payload: any) => ipcRenderer.invoke('finance-tracker:handleTransactionUpdate', payload),
+        handleTransactionDelete: (payload: any) => ipcRenderer.invoke('finance-tracker:handleTransactionDelete', payload),
     },
     updater: {
         // Manual actions
