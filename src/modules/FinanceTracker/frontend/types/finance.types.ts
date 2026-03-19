@@ -60,6 +60,8 @@ export interface Inversion {
     saldo: number;
     /** Capital inicial invertido. */
     valorInicial: number;
+    /** Efectivo disponible en la cuenta de inversión. */
+    efectivoDisponible: number;
     tipo: TipoInversion;
     fechaInicio: string | null;
     moneda: string;
@@ -72,6 +74,7 @@ export interface InversionFormData {
     nombre: string;
     saldo: number;
     valorInicial: number;
+    efectivoDisponible: number;
     tipo: TipoInversion;
     fechaInicio: string | null;
     moneda: string;
