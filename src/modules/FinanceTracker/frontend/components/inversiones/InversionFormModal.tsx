@@ -227,6 +227,7 @@ const InversionFormModal = ({
                                         min="0"
                                         value={valorInicial}
                                         onChange={e => setValorInicial(e.target.value)}
+                                        required
                                         className="w-full bg-slate-800 border border-white/10 rounded-xl pl-10 pr-3 py-3
                                             text-white text-sm
                                             focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30
@@ -245,9 +246,9 @@ const InversionFormModal = ({
                                     <input
                                         type="number"
                                         step="0.01"
-                                        min="0"
                                         value={saldo}
                                         onChange={e => setSaldo(e.target.value)}
+                                        required
                                         className="w-full bg-slate-800 border border-white/10 rounded-xl pl-10 pr-3 py-3
                                             text-white text-sm
                                             focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30

@@ -2,7 +2,7 @@ import { Inversion } from '../domain/inversion.entity';
 import { IInversionPort, CreateInversionData, UpdateInversionData } from '../ports/inversion.port';
 
 export class InversionService {
-    constructor(private readonly inversionPort: IInversionPort) {}
+    constructor(private readonly inversionPort: IInversionPort) { }
 
     async getAll(): Promise<Inversion[]> {
         return this.inversionPort.findAll();
@@ -19,8 +19,8 @@ export class InversionService {
         if (data.valorInicial !== undefined && data.valorInicial < 0) {
             throw new Error('El valor inicial no puede ser negativo.');
         }
-        if (data.saldo !== undefined && data.saldo < 0) {
-            throw new Error('El valor de mercado no puede ser negativo.');
+        if (data.saldo === undefined) {
+            throw new Error('El valor de mercado no puede ser vacio.');
         }
         return this.inversionPort.create(data);
     }
@@ -29,8 +29,8 @@ export class InversionService {
         if (data.valorInicial !== undefined && data.valorInicial < 0) {
             throw new Error('El valor inicial no puede ser negativo.');
         }
-        if (data.saldo !== undefined && data.saldo < 0) {
-            throw new Error('El valor de mercado no puede ser negativo.');
+        if (data.saldo === undefined) {
+            throw new Error('El valor de mercado no puede ser vacio.');
         }
         const updated = await this.inversionPort.update(id, data);
         if (!updated) throw new Error(`Inversión con id ${id} no encontrada.`);
