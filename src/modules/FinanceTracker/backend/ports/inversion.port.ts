@@ -4,6 +4,7 @@ export interface CreateInversionData {
     nombre: string;
     saldo?: number;
     valorInicial?: number;
+    efectivoDisponible?: number;
     tipo?: TipoInversion;
     fechaInicio?: string | null;
     moneda?: string;
@@ -13,6 +14,7 @@ export interface UpdateInversionData {
     nombre?: string;
     saldo?: number;
     valorInicial?: number;
+    efectivoDisponible?: number;
     tipo?: TipoInversion;
     fechaInicio?: string | null;
     moneda?: string;

@@ -4,10 +4,10 @@ import type { Cartera } from './cartera.entity';
 
 export enum TipoInversion {
     ACCIONES = 'acciones',
-    FONDOS   = 'fondos',
-    CRIPTO   = 'cripto',
+    FONDOS = 'fondos',
+    CRIPTO = 'cripto',
     DEPOSITO = 'deposito',
-    OTRO     = 'otro',
+    OTRO = 'otro',
 }
 
 /**
@@ -33,6 +33,10 @@ export class Inversion implements IFinanceAccount {
     /** Capital inicial invertido. Necesario para calcular la rentabilidad. */
     @Column({ type: 'real', default: 0 })
     valorInicial!: number;
+
+    /** Efectivo disponible en la cuenta de inversión. */
+    @Column({ type: 'real', default: 0 })
+    efectivoDisponible!: number;
 
     /** Categoría de la inversión. */
     @Column({ type: 'varchar', default: TipoInversion.OTRO })

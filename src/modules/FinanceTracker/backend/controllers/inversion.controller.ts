@@ -3,7 +3,7 @@ import { InversionService } from '../services/inversion.service';
 import { CreateInversionData, UpdateInversionData } from '../ports/inversion.port';
 
 export class InversionController {
-    constructor(private readonly service: InversionService) {}
+    constructor(private readonly service: InversionService) { }
 
     /**
      * Serialización explícita para asegurar que el getter `rentabilidad`
@@ -15,6 +15,7 @@ export class InversionController {
             nombre: inv.nombre,
             saldo: inv.saldo,
             valorInicial: inv.valorInicial,
+            efectivoDisponible: inv.efectivoDisponible,
             tipo: inv.tipo,
             fechaInicio: inv.fechaInicio instanceof Date
                 ? inv.fechaInicio.toISOString()
