@@ -86,6 +86,8 @@ export interface Inversion {
     moneda: string;
     /** Calculado en el backend: ((saldo - valorInicial) / valorInicial) * 100 */
     rentabilidad: number;
+    /** Calculado en el backend: saldo + efectivoDisponible */
+    valorTotal: number;
     createdAt: string;
 }
 

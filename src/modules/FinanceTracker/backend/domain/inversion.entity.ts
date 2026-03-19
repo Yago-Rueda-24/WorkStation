@@ -65,4 +65,12 @@ export class Inversion implements IFinanceAccount {
         if (this.valorInicial === 0) return 0;
         return ((this.saldo - this.valorInicial) / this.valorInicial) * 100;
     }
+
+    /**
+     * Total calculado sumando el saldo y el efectivo disponible.
+     * Es de solo lectura y no persiste en la base de datos.
+     */
+    get valorTotal(): number {
+        return this.saldo + this.efectivoDisponible;
+    }
 }

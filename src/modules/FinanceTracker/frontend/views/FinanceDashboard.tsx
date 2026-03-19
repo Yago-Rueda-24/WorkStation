@@ -16,6 +16,7 @@ interface InversionResumen {
     id: number;
     nombre: string;
     saldo: number;
+    valorTotal: number;
     valorInicial: number;
     tipo: string;
     rentabilidad: number;
@@ -286,7 +287,7 @@ const FinanceDashboard = () => {
                                     </div>
                                     <div className="flex flex-col items-end gap-1">
                                         <span className="text-sm font-bold text-emerald-400 tabular-nums">
-                                            {formatCurrency(inv.saldo, inv.moneda)}
+                                            {formatCurrency(inv.valorTotal, inv.moneda)}
                                         </span>
                                         <RentabilidadBadge value={inv.rentabilidad} />
                                     </div>

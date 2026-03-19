@@ -42,8 +42,10 @@ export class Cartera {
         return [...(this.cuentasCorrientes ?? []), ...(this.inversiones ?? [])];
     }
 
-    /** Saldo total del grupo: suma de saldos de todas las cuentas. */
+    /** Saldo total del grupo: suma de saldos de todas las cuentas e inversiones. */
     get saldoTotal(): number {
-        return this.cuentas.reduce((sum, c) => sum + c.saldo, 0);
+        const saldoCuentas = (this.cuentasCorrientes || []).reduce((sum, c) => sum + c.saldo, 0);
+        const saldoInversiones = (this.inversiones || []).reduce((sum, inv) => sum + inv.valorTotal, 0);
+        return saldoCuentas + saldoInversiones;
     }
 }

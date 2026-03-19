@@ -22,6 +22,7 @@ export class InversionController {
                 : inv.fechaInicio ?? null,
             moneda: inv.moneda,
             rentabilidad: inv.rentabilidad,
+            valorTotal: inv.valorTotal,
             createdAt: inv.createdAt instanceof Date
                 ? inv.createdAt.toISOString()
                 : new Date(String(inv.createdAt)).toISOString(),

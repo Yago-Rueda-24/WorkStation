@@ -185,7 +185,7 @@ const InversionCard = ({
                     <span className="text-xs text-slate-500 uppercase tracking-wider font-medium">Valor actual</span>
                     <span className="text-xs text-slate-500 font-semibold">(Saldo + Efectivo disponible)</span>
                     <span className="text-2xl font-bold text-white tracking-tight">
-                        {formatCurrency(inversion.saldo + inversion.efectivoDisponible, inversion.moneda)}
+                        {formatCurrency(inversion.valorTotal, inversion.moneda)}
                     </span>
                 </div>
 

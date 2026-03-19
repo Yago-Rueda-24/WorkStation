@@ -46,7 +46,7 @@ export class InversionService {
     /** Valor de mercado total de todas las inversiones. */
     async getTotalValor(): Promise<number> {
         const inversiones = await this.inversionPort.findAll();
-        return inversiones.reduce((sum, i) => sum + i.saldo, 0);
+        return inversiones.reduce((sum, i) => sum + i.valorTotal, 0);
     }
 
     /** Capital total invertido en todas las posiciones. */

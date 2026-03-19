@@ -12,7 +12,7 @@ export class CarteraController {
             id: cuenta.id,
             tipo: cuenta instanceof Inversion ? 'inversion' : 'cuenta_corriente',
             nombre: cuenta.nombre,
-            saldo: cuenta.saldo,
+            saldo: cuenta instanceof Inversion ? cuenta.valorTotal : cuenta.saldo,
             moneda: cuenta.moneda,
             createdAt: cuenta.createdAt instanceof Date
                 ? cuenta.createdAt.toISOString()
