@@ -1,7 +1,7 @@
 {
   "name": "DashDog",
   "private": true,
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "DashDog es el compañero perfecto para tu escritorio. Un dashboard modular que te permite integrar y personalizar herramientas según tus necesidades",
   "author": "Yago Rueda",
   "type": "module",
